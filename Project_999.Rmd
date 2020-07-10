@@ -73,15 +73,19 @@ setwd('/Users/thiemia/Google Drive/Finanzen/Spending')
 # Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
 
 Month_account_trans <- read.csv('Month_account_trans_06.csv')
-# Month_account_trans <- ddply(Month_account_trans, .(month), 
-#               transform, pos = cumsum(x) - (0.5 * x)
-# )
+
+total_month <- aggregate( Month_account_trans$x, by=list(
+  'month'= Month_account_trans$month
+),sum)
+
 p <- ggplot(Month_account_trans, aes(month, x),fill='white')+
  # geom_bar_interactive( stat = 'identity')+ 
   geom_bar_interactive(data=Month_account_trans, stat = 'identity', aes( tooltip=cat_am, data_id=category),fill='white',color='black')+ 
   #geom_bar_interactive( stat = 'identity',position = 'dodge',  fill='black')+ 
  # geom_text(aes(label = x, y = pos), size = 3)+
   geom_hline(yintercept =0,color='black')+
+scale_color_continuous(low = "red",high = "green")+
+  geom_text(data = total_month, aes(x=month,y=7000,label=x, color=x),size=5)+
   #scale_fill_brewer()+
   # scale_fill_gradient(colours=c(bl,"black", re), na.value = "grey98",
   #                      limits = c(min(Month_account_trans$x), max(Month_account_trans$x))) +
@@ -90,7 +94,7 @@ p <- ggplot(Month_account_trans, aes(month, x),fill='white')+
   theme_bw()+
   xlab('month 2020')+
   ylab('USD')+
-  theme( axis.text.x = element_text(color = 'black',angle = 0, hjust = 0.5, vjust = 1),legend.title = element_blank()
+  theme( axis.text.x = element_text(color = 'black',angle = 0, hjust = 0.5, vjust = 0.5),legend.title = element_blank()
             )
 
 
