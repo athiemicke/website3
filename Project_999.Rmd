@@ -59,8 +59,19 @@ Month_investments2 <- aggregate( Month_investments$x, by=list('year'=Month_inves
 Month_investments2$account_class <-'stock_depot'
 Month_account_trans <- rbind.fill(Month_transactions2020_till06, Month_investments2)
 Month_account_trans$x <- round(Month_account_trans$x)
+#Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
+
+Aver_month <- aggregate( Month_account_trans$x, by=list(
+                                                              
+                                                              'category'= Month_account_trans$category
+                                                              #,'account_class'=Month_investments$account_class  
+),sum)
+Aver_month$x <- Aver_month$x/6
+Aver_month$month <- 'Average'
+Month_account_trans <- rbind.fill(Month_account_trans,Aver_month)
 Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
-write.csv(Month_account_trans,'Month_account_trans_06.csv',row.names = F)
+
+#write.csv(Month_account_trans,'Month_account_trans_06.csv',row.names = F)
 # Month_account_trans <- ddply(Month_account_trans, .(month), 
 #               transform, pos = cumsum(x) - (0.5 * x)
 # )
