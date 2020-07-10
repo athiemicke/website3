@@ -11,6 +11,7 @@ library(ggiraph)
 library(magrittr)
 library(stringr)
 library(stringi)
+library(ggplot2)
 #run this every month to track spending and income
 #you need 
 #a) mint transactions
@@ -21,57 +22,57 @@ library(stringi)
 #06 data does not contain extra data for flatex and DKB (not worth it)
 
 setwd('/Users/thiemia/Google Drive/Finanzen/Spending')
-getwd()
-transactions2020_till06 <- read.csv('transactions2020_till06.csv')
-
-transactions2020_till06 <- subset(transactions2020_till06, Intra==F)
-
-#transactions2020_till06 <- subset(transactions2020_till06, !Category2=='intra')
-
-
-transactions2020_till06$Date_full <- transactions2020_till06$Date
-
-transactions2020_till06 <- transactions2020_till06 %>%
-  tidyr::separate(Date, sep="-", into = c("year", "month", "day"))
-
-Month_transactions2020_till06 <- aggregate( transactions2020_till06$Amount2, by=list('year'=transactions2020_till06$year,
-                                                   'month'=transactions2020_till06$month,
-                                                   'category'=transactions2020_till06$Category5
-),sum)
-Month_transactions2020_till06$account_class <-'bank and cc'
-
-
-###Add trading accounts
-source('alpaca_trades.R')
-source('Flatex_trades.R')
-source('CS_trades.R')
-
-# setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
+# getwd()
+# transactions2020_till06 <- read.csv('transactions2020_till06.csv')
+# 
+# transactions2020_till06 <- subset(transactions2020_till06, Intra==F)
+# 
+# #transactions2020_till06 <- subset(transactions2020_till06, !Category2=='intra')
+# 
+# 
+# transactions2020_till06$Date_full <- transactions2020_till06$Date
+# 
+# transactions2020_till06 <- transactions2020_till06 %>%
+#   tidyr::separate(Date, sep="-", into = c("year", "month", "day"))
+# 
+# Month_transactions2020_till06 <- aggregate( transactions2020_till06$Amount2, by=list('year'=transactions2020_till06$year,
+#                                                    'month'=transactions2020_till06$month,
+#                                                    'category'=transactions2020_till06$Category5
+# ),sum)
+# Month_transactions2020_till06$account_class <-'bank and cc'
+# 
+# 
+# ###Add trading accounts
+# source('alpaca_trades.R')
 # source('Flatex_trades.R')
-# setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
-Month_proceeds_A1 <- subset(Month_proceeds_A , ! month=='07')
-Month_investments <- rbind.fill(Month_proceeds_F,Month_proceeds_F_cfd,Month_proceeds_CS,Month_proceeds_A1)
-Month_investments2 <- aggregate( Month_investments$x, by=list('year'=Month_investments$year,
-                                                                       'month'=Month_investments$month,
-                                                              'category'= Month_investments$category
-                                                              #,'account_class'=Month_investments$account_class  
-                                                              ),sum)
-Month_investments2$account_class <-'stock_depot'
-Month_account_trans <- rbind.fill(Month_transactions2020_till06, Month_investments2)
-Month_account_trans$x <- round(Month_account_trans$x)
-#Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
+# source('CS_trades.R')
+# 
+# # setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
+# # source('Flatex_trades.R')
+# # setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
+# Month_proceeds_A1 <- subset(Month_proceeds_A , ! month=='07')
+# Month_investments <- rbind.fill(Month_proceeds_F,Month_proceeds_F_cfd,Month_proceeds_CS,Month_proceeds_A1)
+# Month_investments2 <- aggregate( Month_investments$x, by=list('year'=Month_investments$year,
+#                                                                        'month'=Month_investments$month,
+#                                                               'category'= Month_investments$category
+#                                                               #,'account_class'=Month_investments$account_class  
+#                                                               ),sum)
+# Month_investments2$account_class <-'stock_depot'
+# Month_account_trans <- rbind.fill(Month_transactions2020_till06, Month_investments2)
+# Month_account_trans$x <- round(Month_account_trans$x)
+# #Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
+# 
+# Aver_month <- aggregate( Month_account_trans$x, by=list(
+#                                                               
+#                                                               'category'= Month_account_trans$category
+#                                                               #,'account_class'=Month_investments$account_class  
+# ),sum)
+# Aver_month$x <- Aver_month$x/6
+# Aver_month$month <- 'Average'
+# Month_account_trans <- rbind.fill(Month_account_trans,Aver_month)
+# Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
 
-Aver_month <- aggregate( Month_account_trans$x, by=list(
-                                                              
-                                                              'category'= Month_account_trans$category
-                                                              #,'account_class'=Month_investments$account_class  
-),sum)
-Aver_month$x <- Aver_month$x/6
-Aver_month$month <- 'Average'
-Month_account_trans <- rbind.fill(Month_account_trans,Aver_month)
-Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
-
-#write.csv(Month_account_trans,'Month_account_trans_06.csv',row.names = F)
+Month_account_trans <- read.csv('Month_account_trans_06.csv')
 # Month_account_trans <- ddply(Month_account_trans, .(month), 
 #               transform, pos = cumsum(x) - (0.5 * x)
 # )
@@ -89,7 +90,7 @@ p <- ggplot(Month_account_trans, aes(month, x),fill='white')+
   theme_bw()+
   xlab('month 2020')+
   ylab('USD')+
-  theme( axis.text.x = element_text(color = 'black',angle = 0, hjust = 1, vjust = 1),legend.title = element_blank()
+  theme( axis.text.x = element_text(color = 'black',angle = 0, hjust = 0.5, vjust = 1),legend.title = element_blank()
             )
 
 
