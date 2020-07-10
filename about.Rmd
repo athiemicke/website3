@@ -1,0 +1,39 @@
+---
+title: "Biochemistry meets Data Science"
+---
+
+Hello, I am Alexander Thiemicke and I am currently a PhD Candidate at [Vanderbilt University](https://www.vanderbilt.edu/) in the [Chemical and Physical Biology PhD Program](https://medschool.vanderbilt.edu/cpb/person/alexander-thiemicke/). I am interested in understanding how cells work.
+
+![](mg_7897-web.jpg) 
+
+
+__How does the environment control cell fate?__
+
+I am interested in understanding how cells sense, integrate and respond to environmental stimulation. During my PhD work I have studied the effect of gradual increases of extracellular stress on cells.
+
+
+
+$$Y = \alpha \cdot \cos(X), \alpha = 0,0.1,0.2,...,3$$
+
+
+
+```{r, echo = FALSE, fig.align='center'}
+library(ggplot2)
+cool_function <- function(x, alpha) return(cos(alpha*x))
+xs <- seq(0, pi*1.5, 0.005)
+ys <- cool_function(xs, 1)
+results <- data_frame(xs, ys, alpha = "1")
+for(alpha in seq(0,3, 0.1)){
+  results <- results %>% 
+    bind_rows(data_frame(
+      xs, 
+      ys = cool_function(xs, alpha),
+      alpha = as.character(alpha)
+    ))
+}
+
+ggplot(results, aes(x = xs, y = ys, color = alpha)) + 
+  geom_line() + 
+  theme_bw() + 
+  theme(legend.position="none")
+```

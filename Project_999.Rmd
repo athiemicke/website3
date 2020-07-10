@@ -1,0 +1,93 @@
+---
+title: "In and out bars"
+---
+
+Distribution of income and expenses.
+
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+#rm(list = ls())
+library(quantmod)
+library(ggiraph)
+library(magrittr)
+library(stringr)
+library(stringi)
+#run this every month to track spending and income
+#you need 
+#a) mint transactions
+#b) schwab transactions (table needs to be in setwd('~/Google Drive/Finanzen/monthly trades')  )
+#c) flatex depot and bank transactions
+#d) dkb credit and debit transactions
+#make a folder for that month and add the files into it
+#06 data does not contain extra data for flatex and DKB (not worth it)
+
+setwd('/Users/thiemia/Google Drive/Finanzen/Spending')
+getwd()
+transactions2020_till06 <- read.csv('transactions2020_till06.csv')
+
+transactions2020_till06 <- subset(transactions2020_till06, Intra==F)
+
+#transactions2020_till06 <- subset(transactions2020_till06, !Category2=='intra')
+
+
+transactions2020_till06$Date_full <- transactions2020_till06$Date
+
+transactions2020_till06 <- transactions2020_till06 %>%
+  tidyr::separate(Date, sep="-", into = c("year", "month", "day"))
+
+Month_transactions2020_till06 <- aggregate( transactions2020_till06$Amount2, by=list('year'=transactions2020_till06$year,
+                                                   'month'=transactions2020_till06$month,
+                                                   'category'=transactions2020_till06$Category5
+),sum)
+Month_transactions2020_till06$account_class <-'bank and cc'
+
+
+###Add trading accounts
+source('alpaca_trades.R')
+source('Flatex_trades.R')
+source('CS_trades.R')
+
+# setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
+# source('Flatex_trades.R')
+# setwd('/Users/thiemia/Google Drive/Finanzen/Spending/june2020')
+Month_proceeds_A1 <- subset(Month_proceeds_A , ! month=='07')
+Month_investments <- rbind.fill(Month_proceeds_F,Month_proceeds_F_cfd,Month_proceeds_CS,Month_proceeds_A1)
+Month_investments2 <- aggregate( Month_investments$x, by=list('year'=Month_investments$year,
+                                                                       'month'=Month_investments$month,
+                                                              'category'= Month_investments$category
+                                                              #,'account_class'=Month_investments$account_class  
+                                                              ),sum)
+Month_investments2$account_class <-'stock_depot'
+Month_account_trans <- rbind.fill(Month_transactions2020_till06, Month_investments2)
+Month_account_trans$x <- round(Month_account_trans$x)
+Month_account_trans$cat_am <- paste(Month_account_trans$x,Month_account_trans$category,sep = '_')
+write.csv(Month_account_trans,'Month_account_trans_06.csv',row.names = F)
+# Month_account_trans <- ddply(Month_account_trans, .(month), 
+#               transform, pos = cumsum(x) - (0.5 * x)
+# )
+p <- ggplot(Month_account_trans, aes(month, x),fill='white')+
+ # geom_bar_interactive( stat = 'identity')+ 
+  geom_bar_interactive(data=Month_account_trans, stat = 'identity', aes( tooltip=cat_am, data_id=category),fill='white',color='black')+ 
+  #geom_bar_interactive( stat = 'identity',position = 'dodge',  fill='black')+ 
+ # geom_text(aes(label = x, y = pos), size = 3)+
+  geom_hline(yintercept =0,color='black')+
+  #scale_fill_brewer()+
+  # scale_fill_gradient(colours=c(bl,"black", re), na.value = "grey98",
+  #                      limits = c(min(Month_account_trans$x), max(Month_account_trans$x))) +
+#  scale_fill_continuous() +
+  #scale_fill_continuous(type = "gradient")
+  theme_bw()+
+  xlab('month 2020')+
+  ylab('USD')+
+  theme( axis.text.x = element_text(color = 'black',angle = 0, hjust = 1, vjust = 1),legend.title = element_blank()
+            )
+
+
+p_gir <- girafe(ggobj = p)
+```
+
+
+
+```{r plotbox2, echo=FALSE,warning = FALSE}
+girafe(ggobj = p)
+```
+

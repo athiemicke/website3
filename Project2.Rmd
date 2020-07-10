@@ -1,0 +1,5 @@
+---
+title: "Protein Network dynamics"
+---
+
+For my PhD thesis, I applied fluorescent cell barcoding for multiplex Flow cytometry to do time course experiments of cells exposed to stress by different temporal input profiles. I selected a wide range of markers of cell state and in the result obtained a large dataset of highly reporoducible protein expression dynamics under different condition in a human immune cell line. This data will be published in a manuscript[[3]](https://athiemicke.com/publications.html). To make the data optimally accessible, I developed an interactive [app](https://athiemicke.shinyapps.io/viz_app/) that allows the selection of experimental conditions and the measured cellular markers. The data currently in the app is randomized data of two random markers in arbitray control and treatment condition. 

@@ -1,0 +1,25 @@
+---
+title: "Preparation and activity studies of FlaK, an intra-membrane protease of *Methanococcus maripaludis*."
+---
+Alzheimer’s disease is a very common form of dementia. Because of the ageing of the world population 
+more and more people are diagnosed with Alzheimer’s disease. Besides the burden for each patient, the symptoms of 
+Alzheimer’s disease require an intensive care of the affected persons, aburdern for the health care system. 
+Therefore, it is of high interest to understand the development of the disease.
+Associated with Alzheimer’s disease are amyloid plaques found in the human brain. They consist of A beta peptides, 
+that are formed during the cleavage of the Amyloid Precursor Protein (APP) by gamma secretase. Gamma secretase consists 
+of four subunits. The catalytic subunit, presenilin, is an aspartyl protease, which is found inside the membrane. 
+Because its substrate APP is also found in the membrane it is suggested that presenilin cleaves in the membrane. 
+The mechanism of the reaction is therefore not yet known. This novel form of aspartyl proteases possesses a conserved GxGD-motive,
+which is not found in soluble aspartyl proteases. The GxGD-motive is probably part of the active center of the enzyme and 
+is the common feature of the novel protein family. Members of this family are the presenilins (PS), the Signal-Peptidepeptidases (SPP)
+and SPP-like proteins (SPPL), the type-4 Prepilin Peptidases (TFPP) and the TFPP-homologs. To get more information about 
+this protease family it is advisable to start exploring the simplest members of the family. The archaea *Methanoccoccus maripaludis* 
+contains an enzyme with the GxGD-motive that is smaller as comparable bacterial or eukaryotic enzymes. The enzyme, FlaK, 
+is responsible for the processing of preflagellins. During this Bachelor thesis, the enzyme was expressed in *E.coli* 
+and purified. The activity of the purified enzyme was tested in an optimized assay. To test the comparability to the 
+eukaryotic family members typical gamma-Secretase-inhibitors were employed in the activity test. None of these inhibitors
+could show an effect on the processing under the given conditions. Additionally, the original detergent DDM was exchanged to 
+LDAO, because the protein didn’t crystallized to diffracting crystals with this detergent so far. Another detergent could 
+support the crystallization, because of different interactions with the protein. However the enzyme aggregated during 
+concentrating after the detergent exchange. The concentration and the amount of protein after the concentration haven’t 
+been enough for crystallization trials.

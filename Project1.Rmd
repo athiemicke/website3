@@ -1,0 +1,8 @@
+---
+title: "Natural language processing approach to search for hidden information in the scientific literature"
+---
+
+There are about 30 million articles listed in Pubmed and every year there are about 500,000 more added with tendency of an increasing rate. Keeping an overview across different biomedical fields gets ever more challenging. As a systems biologist, I aim to characterize biological properties that are of general importance, but have not been a focus in previuos studies. This means that my perspective on the results in previous studies is slightly different than the perspective of the original authors may have been. Key findings presented in the title, key words and abstract may not reveal other important findings that could be relevant for a systems biologist. Fortunately, the expansion in the scientific literature is accompanied by the the development of programmatic tools to access, screen and structure the natural language documents.
+
+
+## [Natural language processing approach to search for hidden information in the scientific literature]

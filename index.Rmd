@@ -1,0 +1,122 @@
+---
+title: "Biochemist, Systems Biologist and Data Scientist"
+---
+
+
+
+
+Hello, I am currently a PhD Candidate at [Vanderbilt University](https://www.vanderbilt.edu/) in the [Chemical and Physical Biology PhD Program](https://medschool.vanderbilt.edu/cpb/person/alexander-thiemicke/). I am interested in understanding how cells respond to stimulation in temporally changing environments.
+
+![](mg_7897-web.jpg) 
+
+
+### How do temporal changes of stress in the environment control cell fate?
+
+In particular, I am interested in understanding how cells sense, integrate and respond to environmental stress. In the context of my PhD work in the lab of my PhD advisor [Gregor Neuert](https://scholar.google.com/citations?user=k2lm0AIAAAAJ), I study the effect of gradual increases of extracellular stress on cells. I focus on the effect of increasing hypertonicity on cells a fundamental stress affecting cells in many tissues. Since the existence of life, cells had to cope with changes in extracellular hypertonicity and therefore mechanisms and even pathway components responding to the stress are conserved from bacteria to humans.
+
+![](f1.jpg) 
+
+Currently, I am preparing a manuscript[[1]](https://athiemicke.com/publications.html) in which I describe the results of my studies in human cells. I investigated the effect of dynamically changing NaCl inputs on cellular processes by measuring the expression and activation of +35 key markers of cell state and the concentration change of intracellular metabolites.
+
+
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+library(sf)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+#class(world)
+# states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+# states <- cbind(states, st_coordinates(st_centroid(states)))
+# states$ID <- toTitleCase(states$ID)
+
+
+
+
+
+#Jena 	geo:50.927222,11.586111
+#Oslo 	geo:59.916667,10.733333
+#Berkeley 	geo:37.871667,-122.272778
+#Pittsburgh  	geo:40.439722,-79.976389
+#Nashville 	geo:36.166667,-86.783333
+#Cold spring harbor 	geo:40.861944,-73.467222
+#Irvine 	geo:33.669444,-117.823056
+#Birmingham 		geo:33.653333,-86.808889
+
+sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-86.783333,-73.467222,-117.823056,-86.808889
+                                   ), latitude = c(50.927222, 59.916667,37.871667,40.439722,36.166667,40.861944,
+                                                                  33.669444,  33.653333),
+                    purpose= c('Education', 'Education', 'Research', 'Research', 'Education', 'Presentation',
+                               'Presentation', 'Presentation'),
+                    Institution=c('Friedrich-Schiller-University Jena','University of Oslo','UC Berkeley',
+                                  'University of Pittsburgh', 'Vanderbilt University', 'Cold Spring Harbor',
+                                  'UC Irvine','UA Birmingham'),
+                    explanation=c('Bachelor of Science 2008-2011\nMaster of Science 2011-2014', 
+                                  'Erasmus exchange 2010', 
+                                  'Master Thesis student 2013/14',
+                                  'RISE Intern 2011',
+                                  'PhD Candidate 2014-2020',
+                                  'CSHL Systems Immunology 2019\nCSHL Cell Death 2019',
+                                  'Cell Fate Symposium 2019',
+                                  'Southeastern Immunology 2018\nNSF Computational Modeling Workshop 2019'
+                                  )
+                   #, onclick=sprintf("window.open(\"%s%s\")",'https://athiemicke.com')
+                                  
+)
+
+#sites$onclick <- sprintf("window.open(\"%s%s\")",'https://athiemicke.com')
+  #sprintf("window.open(\"%s%s\")","http://en.wikipedia.org/wiki/", as.character(crimes$state) )
+
+#sites$onclick <-sprintf("window.open(\"%s%s\")",'https://athiemicke.com', '/')
+
+sites$onclick <- sprintf("window.open(\"%s%s\")",
+        "http://athiemicke.com/", as.character('projects.html') )
+
+CV_Map <- ggplot(data = world) +
+  geom_sf()+
+  #geom_sf(data = states, fill = NA) +
+  geom_label_repel(data = sites,aes(x = longitude, y = latitude,label=Institution
+                                    ,color=purpose  #, fill=purpose
+                                    ),
+                  # alpha=0.3,
+                   box.padding   = 0.35,
+                   point.padding = 0.5,
+                  # position = position_dodge(0.5),
+                   label.size = 0.2,
+                   size        = 3,
+                   segment.color = 'grey50') +
+  geom_point_interactive(data = sites, aes(x = longitude, y = latitude, color=purpose, fill=purpose
+                                          , tooltip = explanation
+                                          #, data_id = purpose
+                                          #, onclick=onclick
+                                           ), size = 2, 
+                         shape = 23) +
+  # geom_point(data = sites, aes(x = longitude, y = latitude, color=purpose, fill=purpose), size = 2, 
+  #            shape = 23) +
+  coord_sf(xlim = c(-138, 28), ylim = c(24.5, 73), expand = FALSE)+
+  theme(
+    legend.box.background = element_rect(fill = "white", colour = "black"),
+   # legend.key = element_rect(fill = "white", colour = "black",size = 1),
+    # legend.position=c(0.6,1), legend.justification=c(0,1), 
+    legend.title = element_blank(),
+    legend.position="bottom",
+    legend.justification = "center", 
+   # legend.key.size = unit(1,"cm"),
+  #  legend.key.height = unit(0.5,"cm"),
+   # legend.key.width=unit(0.5, "cm"),
+    panel.grid.major = element_blank(), 
+       panel.background = element_rect(fill = "aliceblue"),
+       axis.ticks= element_blank(),
+       axis.text = element_blank(),
+       axis.title = element_blank()
+       )
+
+# x <- girafe(ggobj = CV_Map)
+# if( interactive() ) print(x)
+
+
+
+```
+
+During the course of my studies, I always seeked the opportunity to explore different places. I have been fortunate to study, work and present my research at various institutions and in different countries. The map below indicates, where I did some of my work. By hovering over the locations, you can see when and for what reason I was at each location:
+```{r plotbox, echo=FALSE,warning = FALSE}
+girafe(ggobj = CV_Map)
+```

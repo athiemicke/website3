@@ -1,0 +1,380 @@
+---
+title: "Postdoc search"
+---
+
+In this project, I aim to identify a suitable postdoc lab. I am focused on 6 areas ob biological reasearch and two main geographical regions.
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+rm(list = ls())
+#library(libwgeom)
+#install.packages("googleway")
+library(ggplot2)
+library(scales)
+library(googleway)
+library(purrr)
+library(sf)
+library(cowplot)
+#install.packages("ggspatial")
+library(ggspatial)
+#install.packages("rnaturalearth")
+#install.packages("rnaturalearthdata")
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(cowplot)
+
+#install.packages('rgeos')
+library(rgeos)
+#install.packages('tools')
+library(tools)
+#install.packages("ggiraph")
+library(ggiraph)
+library(ggrepel)
+#install.packages("maps")
+library(maps)
+library(plyr)
+library(dplyr)
+library(httr)
+library(rvest)
+
+sites <- data.frame(  latitude= c(37, 37.7627 ,37.7627 ,37.7627 ,37.7627,
+                                  40.345278,33.775833,32.8875,34.138,34.138,42.36,42.335743,42.335743,
+                                  42.36,41.311111,37.428229,34.138,34.021667,43.661667,32.8801,34.138,32.8801,
+                                  42.335743,34.138,32.8801,43.661667,43.661667,41.311111,37.7627,37.7627,37.428229,
+                                  42.335743,37.428229,37.87,37.87,37.428229,37.428229,37.428229,37.428229,42.36,42.36,42.36,
+                                  37.428229,37.428229,42.335743
+                                   ), longitude = c(-122.06, -122.4581, -122.4581, -122.4581, -122.4581,
+                                                   -74.656111,-84.394722,-117.246389,-118.125,-118.125,-71.092,-71.105138,-71.105138,
+                                                   -71.092,-72.926667,-122.168858,-118.125,-118.285278,-79.395,-117.234,-118.125,
+                                                   -117.234,-71.105138,-118.125,-117.234,-79.395,-79.395,-72.926667,-122.4581,
+                                                   -122.4581,-122.168858,-71.105138,-122.168858,-122.259,-122.259,-122.168858,
+                                                   -122.168858,-122.168858,-122.168858,-71.092,-71.092,-71.092,-122.168858,
+                                                   -122.168858,-71.105138
+                                                   
+                                                   ),
+                    Main_Field_of_Research= c('Stem Cell','Systems Bio','Stem Cell','Stem Cell','Systems Bio'
+                                              ,'Systems Bio','Systems Bio','Signaling','Stem Cell','Systems Bio',
+                                              'Systems Bio','Synthetic Bio','Systems Bio','Systems Bio','Immunology',
+                                              'Biophysics','Systems Bio','Stem Cell','Stem Cell','Systems Bio','Stem Cell',
+                                              'Systems Bio', 'Systems Bio','Stem Cell','Signaling','Stem Cell','Immunology',
+                                              'Immunology','Immunology','Immunology','Stem Cell','Gene regulation','Stem Cell',
+                                              'Stem Cell','Stem Cell','Systems Bio','Stem Cell','Stem Cell','Stem Cell',
+                                              'Systems Bio','Systems Bio','Systems Bio','Systems Bio','Systems Bio',
+                                              'Systems Bio'
+                    ),
+                    Institution=c('UCSC','UCSF','UCSF','UCSF','UCSF',
+                                  'Princeton','GeorgiaTech','Salk','CalTech','CalTech','MIT','HMS','HMS','MIT',
+                                  'Yale','Stanford','CalTech','USC','Toronto','UCSD','CalTech','UCSD','HMS','CalTech',
+                                  'UCSD','Toronto','Toronto','Yale','UCSF','UCSF','Stanford','HMS','Stanford','Berkeley'
+                                  ,'Berkeley','Stanford','Stanford','Stanford','Stanford','MIT','MIT','MIT','Stanford',
+                                  'Stanford','HMS'
+                      
+                    ),
+                    
+                    Lab=c('Forsberg','El_Samad','McDevitt','Yamanaka','Lim',
+                          'Bassler','Kemp','Hunter','Rothenberg','Elowitz','Collins','Silver','DePace','Li',
+                          'Medzhitov','Quake', 'Goentoro','Crump','Rossant','Hao','Stathopoulos','Ideker',
+                          'Lahav','Sternberg','Suel','Guidos','Zuniga_Pflucker','Miller_Jensen','Weiss',
+                          'Bluestone','Weissman','Church','Wernig','Schaffer','Conboy','Newman','Oro','Heller',
+                          'Beachy','Yaffe','Lauffenburger','Sorger','Skotheim','Meyer','Gunawardena'
+                      
+                                  )
+                  ,  GScholar=c( NA,'uZe-MqQAAAAJ', '2i8G9OUAAAAJ',   NA, NA,'d1Jk5ecAAAAJ&hl',
+                                 'WUN5ok8AAAAJ&hl','fcxriTYAAAAJ&hl','HPYIX8QAAAAJ&hl','a4jsUp4AAAAJ&hl',
+                                 'te5DjPQAAAAJ','X-8ViBEAAAAJ&hl','KIrAUEYAAAAJ&hl','2WTF_TsAAAAJ&hl',
+                                 '7oY-qF4AAAAJ&hl',NA,'7EQmovMAAAAJ&hl','P3wKwPcAAAAJ&hl','abY9aJ0AAAAJ',
+                                 'Kh10YKsAAAAJ','3cwkINwAAAAJ','KnAit3cAAAAJ',NA,'kSPhZMMAAAAJ',NA,
+                                 'dLgBiHUAAAAJ','mJK39B8AAAAJ','A8uTeYAAAAAJ','POuM-k0AAAAJ',NA,
+                                 'Y66bJgUAAAAJ','SfDzdgEAAAAJ','N5M5yMQAAAAJ','lmJ4en0AAAAJ','A1TtFs8AAAAJ',
+                                 'gODP8bYAAAAJ','lijNBJIAAAAJ',NA,'gvYLwYUAAAAJ',NA,'5cNiewcAAAAJ','wS6Ii_cAAAAJ',
+                                 'P5xcdGMAAAAJ','qRAMJHgAAAAJ','mJyNk_0AAAAJ')
+                   , onclick=c(sprintf("window.open(\"%s%s\")","https://forsberglab.soe.ucsc", as.character('.edu/')),
+                               sprintf("window.open(\"%s%s\")",'http://elsamadlab.ucsf', as.character('.edu/')),
+                               sprintf("window.open(\"%s%s\")",'http://mcdevitt.gladstone', as.character('.org/')),
+                  sprintf("window.open(\"%s%s\")",'http://https://labs.gladstone.org/yamanaka', as.character('/index.html')),
+                               sprintf("window.open(\"%s%s\")",'http://limlab.ucsf', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://scholar.princeton.edu/basslerlab/', as.character('people/bonnie-l-bassler')),
+            sprintf("window.open(\"%s%s\")",'https://kemp.gatech', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://hunter.salk', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://elowitz.caltech', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://www.bbe.caltech', as.character('.edu/people/ellen-rothenberg')),
+            sprintf("window.open(\"%s%s\")",'http://collinslab.mit', as.character('.edu/index.html')),
+            sprintf("window.open(\"%s%s\")",'https://silver.med.harvard', as.character('.edu')),
+            sprintf("window.open(\"%s%s\")",'https://depace.med.harvard', as.character('.edu/index.html')),
+            sprintf("window.open(\"%s%s\")",'http://wi.mit', as.character('.edu/people/faculty/li')),
+            sprintf("window.open(\"%s%s\")",'https://medicine.yale', as.character('.edu/profile/ruslan_medzhitov/')),
+            sprintf("window.open(\"%s%s\")",'https://quakelab.stanford', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://goentoro.caltech', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://crumplab.usc', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://lab.research.sickkids', as.character('.ca/rossant/#Projects')),
+            sprintf("window.open(\"%s%s\")",'http://haolab.ucsd', as.character('.edu/index.html')),
+            sprintf("window.open(\"%s%s\")",'http://www.stathlab.caltech', as.character('.edu/index.html')),
+            sprintf("window.open(\"%s%s\")",'http://idekerlab.ucsd', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://sysbio.med.harvard', as.character('.edu/galit-lahav')),
+            sprintf("window.open(\"%s%s\")",'http://wormlab.caltech', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://suellab', as.character('.github.io/')),
+            sprintf("window.open(\"%s%s\")",'http://www.sickkids.ca/Research/Guidos-Lab/', as.character('index.html')),
+            sprintf("window.open(\"%s%s\")",'https://sunnybrook.ca/research/team/', as.character('member.asp?t=13&m=191&page=172')),
+            sprintf("window.open(\"%s%s\")",'https://www.miller-jensen', as.character('.org/')),
+            sprintf("window.open(\"%s%s\")",'https://artweisslab.ucsf', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://bluestone.ucsf', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://med.stanford', as.character('.edu/stemcell/institutefaculty/weissman.html')),
+            sprintf("window.open(\"%s%s\")",'http://arep.med.harvard', as.character('.edu/gmc/')),
+            sprintf("window.open(\"%s%s\")",'https://www.werniglab', as.character('.org/')),
+            sprintf("window.open(\"%s%s\")",'http://www.cchem.berkeley', as.character('.edu/schaffer/')),
+            sprintf("window.open(\"%s%s\")",'http://conboylab.berkeley', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'https://anlab.stanford', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://med.stanford', as.character('.edu/orolab.html')),
+            sprintf("window.open(\"%s%s\")",'https://hellerlab.stanford', as.character('.edu/#our-team')),
+            sprintf("window.open(\"%s%s\")",'http://med.stanford', as.character('.edu/stemcell/institutefaculty/beachy.html')),
+            sprintf("window.open(\"%s%s\")",'https://yaffelab.mit', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://web.mit', as.character('.edu/dallab/')),
+            sprintf("window.open(\"%s%s\")",'http://sorger.med.harvard', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://jan-skotheim', as.character('.squarespace.com/')),
+            sprintf("window.open(\"%s%s\")",'https://meyerlab.stanford', as.character('.edu/')),
+            sprintf("window.open(\"%s%s\")",'http://vcp.med.harvard', as.character('.edu/'))
+            
+          #  sprintf("window.open(\"%s%s\")",'http://vcp.med.harvard', as.character('.edu/'))
+            
+            
+                               
+                   )
+                                  
+)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+states <- st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
+states <- cbind(states, st_coordinates(st_centroid(states)))
+states$ID <- toTitleCase(states$ID)
+
+current <- Sys.time()
+labs_new <- NULL
+for ( i in seq_along(sites$Lab)) {
+  id <- sites$GScholar[i]
+  metrics <- data.frame('Citations'=NA, 'h_index'=NA, 'i10_index'=NA,'years_since_first_cite'=NA)
+  if (is.na(id)==F) {
+    
+  
+  Gschol <- paste('https://scholar.google.com/citations?user=', id, sep = '')
+  cites <- read_html(Gschol)
+  h <- cites %>%
+    #html_nodes('tr:nth-child(2) .gsc_rsb_sc1+ .gsc_rsb_std') %>%
+    html_nodes('.gsc_rsb_std') %>%
+    html_text() 
+  h <- as.numeric(h)
+  citovertime <- cites %>%
+    #html_nodes('tr:nth-child(2) .gsc_rsb_sc1+ .gsc_rsb_std') %>%
+    html_nodes('.gsc_g_a , #gsc_md_hist_c') %>%
+    html_text() 
+  yeara <- length(citovertime)
+  metrics <- data.frame('Citations'=h[1], 'h_index'=h[3], 'i10_index'=h[5],'years_since_first_cite'=yeara)
+
+  }
+  labs <-  cbind(sites[i,], metrics)
+  labs_new <- rbind.fill(labs_new, labs)
+}
+
+east <- subset(labs_new, latitude > 40)
+west <- subset(labs_new, longitude < -100)
+
+#names(states) <- c('name' , "X"     ,   "Y"       , "geometry")
+#new_world <- rbind.fill(world, states)
+FS=28
+CV_Map_east <- ggplot() +
+  geom_sf(data = world)+
+  geom_sf(data = states, fill = NA) +
+  geom_label_repel(data = east,aes(x = longitude, y = latitude,label=Lab
+                                    ,color=Main_Field_of_Research  #, fill=purpose
+                                    ),
+                  # alpha=0.3,
+                   box.padding   = 0.035,segment.size = 0.5,
+                   point.padding = 0.05,
+                  # position = position_dodge(0.5),
+                   label.size = 0.02,
+                   size        = 1.5,show.legend = T,
+                   segment.color = 'grey50') +
+  # geom_point_interactive(data = sites, aes(x = longitude, y = latitude,color=Main_Field_of_Research,fill=Main_Field_of_Research# color=Institution, fill=Institution
+  #                                         , tooltip = Lab
+  #                                         , data_id = Main_Field_of_Research
+  #                                         , onclick=onclick
+  #                                          ), size =0.25, 
+  #                        shape = 23) +
+#   geom_text_interactive(data = sites,aes(x = longitude, y = latitude,label=Lab
+#                                           ,color=Institution  #, fill=purpose
+#                                          , onclick=onclick
+#   ),
+#   # alpha=0.3,    
+#   box.padding   = 0.0035,segment.size = 0.5,
+# point.padding = 0.005,
+# # position = position_dodge(0.5),
+# label.size = 0.002,
+# size        = 0.75,show.legend = F,
+# segment.color = 'grey50') +
+  geom_point(data = sites, aes(x = longitude, y = latitude,  fill=Institution), size = 2,
+             shape = 23) +
+ # coord_sf(xlim = c(-138, -50), ylim = c(24.5, 50), expand = FALSE)+
+  coord_sf(xlim = c(-85, -66), ylim = c(40, 46), expand = FALSE)+
+  #coord_sf(xlim = c(-124, -115), ylim = c(32, 41), expand = FALSE)+
+  theme(
+    legend.box.background = element_rect(fill = "white", colour = "white"),
+   # legend.key = element_rect(fill = "white", colour = "black",size = 1),
+    # legend.position=c(0.6,1), legend.justification=c(0,1), 
+  #  legend.title = element_blank(),
+    legend.position="bottom",
+    legend.justification = "center", 
+   # legend.key.size = unit(1,"cm"),
+  #  legend.key.height = unit(0.5,"cm"),
+   # legend.key.width=unit(0.5, "cm"),
+    panel.grid.major = element_blank(), 
+       panel.background = element_rect(fill = "aliceblue"),
+       axis.ticks= element_blank(),
+       axis.text = element_blank(),
+       axis.title = element_blank()
+       )
+x1 <- girafe(ggobj = CV_Map_east)
+
+CV_Map_west <- ggplot() +
+  geom_sf(data = world)+
+  geom_sf(data = states, fill = NA) +
+  geom_label_repel(data = west,aes(x = longitude, y = latitude,label=Lab
+                                    ,color=Main_Field_of_Research  #, fill=purpose
+                                    ),
+                  # alpha=0.3,
+                   box.padding   = 0.035,segment.size = 0.5,
+                   point.padding = 0.05,
+                  # position = position_dodge(0.5),
+                   label.size = 0.02,
+                   size        = 1.5,show.legend = T,
+                   segment.color = 'grey50') +
+  # geom_point_interactive(data = sites, aes(x = longitude, y = latitude,color=Main_Field_of_Research,fill=Main_Field_of_Research# color=Institution, fill=Institution
+  #                                         , tooltip = Lab
+  #                                         , data_id = Main_Field_of_Research
+  #                                         , onclick=onclick
+  #                                          ), size =0.25, 
+  #                        shape = 23) +
+#   geom_text_interactive(data = sites,aes(x = longitude, y = latitude,label=Lab
+#                                           ,color=Institution  #, fill=purpose
+#                                          , onclick=onclick
+#   ),
+#   # alpha=0.3,    
+#   box.padding   = 0.0035,segment.size = 0.5,
+# point.padding = 0.005,
+# # position = position_dodge(0.5),
+# label.size = 0.002,
+# size        = 0.75,show.legend = F,
+# segment.color = 'grey50') +
+  geom_point(data = sites, aes(x = longitude, y = latitude,  fill=Institution), size = 2,
+             shape = 23) +
+ # coord_sf(xlim = c(-138, -50), ylim = c(24.5, 50), expand = FALSE)+
+  #coord_sf(xlim = c(-85, -66), ylim = c(40, 46), expand = FALSE)+
+  coord_sf(xlim = c(-124, -115), ylim = c(32, 41), expand = FALSE)+
+  theme(
+    legend.box.background = element_rect(fill = "white", colour = "white"),
+   # legend.key = element_rect(fill = "white", colour = "black",size = 1),
+    # legend.position=c(0.6,1), legend.justification=c(0,1), 
+  #  legend.title = element_blank(),
+    legend.position="bottom",
+    legend.justification = "center", 
+   # legend.key.size = unit(1,"cm"),
+  #  legend.key.height = unit(0.5,"cm"),
+   # legend.key.width=unit(0.5, "cm"),
+    panel.grid.major = element_blank(), 
+       panel.background = element_rect(fill = "aliceblue"),
+       axis.ticks= element_blank(),
+       axis.text = element_blank(),
+       axis.title = element_blank()
+       )
+x2 <- girafe(ggobj = CV_Map_west)
+```
+
+
+
+
+Google scholar metrics for each lab:
+
+```{r plotbox3, echo=FALSE,warning = FALSE}
+FS=6
+p<- ggplot(labs_new)+
+  geom_point_interactive(aes(Citations,years_since_first_cite,size=h_index,color=Main_Field_of_Research,
+                              onclick=onclick))+
+  geom_text_repel(aes(x = Citations, y = years_since_first_cite, label=Lab
+                                   ,color=Main_Field_of_Research  #, fill=purpose
+  ),
+  # alpha=0.3,
+  box.padding   = 0.85,segment.size = 0.5,
+  point.padding = 0.5,
+  # position = position_dodge(0.5),
+  label.size = 3,
+  size        = 3,show.legend = F,
+  segment.color = 'grey50') +
+  scale_x_continuous(trans = log10_trans(),
+                     breaks = trans_breaks("log10", function(x) 10^x),
+                     labels = trans_format("log10", math_format(10^.x)),
+                     limits = c(10^2,10^6))+
+  theme(
+    #  legend.position=c(0.01,0.99), legend.justification=c(0,1), 
+    # legend.box.background = element_rect(fill = "white", colour = "black", size=1),
+    
+    # legend.box.background = element_rect(fill = NA, colour = "white"),
+    legend.key = element_rect(fill = "white", colour = "white",size = 0.05),
+    legend.background = element_rect(color = NA,fill=NA),
+    legend.box.background = element_blank(),
+   # legend.position=c(0.01,1), 
+    #legend.justification=c(0,1), 
+     legend.position="top",
+    legend.justification = "center", 
+    legend.key.size = unit(0.1,"cm"),
+    legend.key.height = unit(0.1,"cm"),
+    legend.key.width=unit(0.1, "cm"),
+    legend.text = element_text(size=FS),
+    #  legend.title = element_text(size=FS),
+    legend.title = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = NA),
+    panel.grid.major.y =element_blank(),
+    # panel.grid.minor.y = element_line(colour = "black", linetype = 'dashed'),
+    panel.grid.major.x= element_blank(),
+    #panel.background = element_blank(),
+    axis.ticks.x = element_line(colour = 'black', size = 1, linetype = 'solid'),
+    # axis.ticks.x= element_blank(),
+    axis.ticks.y = element_line(colour = 'black', size = 1, linetype = 'solid'),
+    axis.text.x = element_text(size=FS, color = 'black',angle = 0, hjust = 0.5, vjust = 0.3),
+    #axis.text.x = element_blank(),
+    axis.text.y = element_text(size=FS, color = 'black'),
+    axis.title.x = element_text(size=FS, color = 'black'),
+    # axis.title.x = element_blank(),
+    axis.title.y = element_text(size=FS, color = 'black'),
+    axis.line = element_line(colour = "black", size = 0.5, linetype = "solid"),
+    #axis.line.x = element_blank(),
+    strip.text.x = element_text(size=2*FS, color="black",
+                                face="bold.italic"),
+    strip.text.y = element_text(size=2*FS, color="black",
+                                face="bold.italic",
+                                angle = -90),
+    
+    # Change the apperance of the rectangle around facet label
+    strip.background = element_rect(colour="black", fill="white", 
+                                    size=1.5, linetype="solid"))
+  #guides(color=guide_legend(ncol=2,nrow=2,byrow=TRUE))+
+ # guides(fill=guide_legend(ncol=2,nrow=2,byrow=TRUE))
+
+girafe(ggobj = p) %>%
+  girafe_options(opts_zoom(max = 5),
+                 opts_tooltip(use_fill = TRUE))
+```
+
+Labs on the East Coast:
+
+```{r plotbox, echo=FALSE,warning = FALSE}
+ if( interactive() ) print(x1)
+girafe(ggobj = CV_Map_east) %>%
+  girafe_options(opts_zoom(max = 3))
+```
+
+Labs in California:
+
+```{r plotbox2, echo=FALSE,warning = FALSE}
+ if( interactive() ) print(x2)
+girafe(ggobj = CV_Map_west) %>%
+  girafe_options(opts_zoom(max = 3))
+```
+

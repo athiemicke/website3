@@ -1,0 +1,212 @@
+---
+title: "Corona virus"
+---
+
+A coronavirus called COVID-19 has affected this world in 2020. The infection spread globally and was declared a pandemic.
+
+Several countries have decided to take unprecedented and severe precautions to prevent the spread of this virus.
+
+Among these are social distancing and lockdowns. These cause people to stay at home and work from home. In addition school, university and pre school closings result in children being at home.
+
+
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+rm(list = ls())
+#library(libwgeom)
+#install.packages("googleway")
+library(googleway)
+library(purrr)
+library(sf)
+library(cowplot)
+#install.packages("ggspatial")
+library(ggspatial)
+#install.packages("rnaturalearth")
+#install.packages("rnaturalearthdata")
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(cowplot)
+
+#install.packages('rgeos')
+library(rgeos)
+#install.packages('tools')
+library(tools)
+#install.packages("ggiraph")
+library(ggiraph)
+library(ggrepel)
+#install.packages("maps")
+library(maps)
+library(plyr)
+library(dplyr)
+library(httr)
+library(rvest)
+
+
+```
+
+Sectors:
+```{r box1, echo=FALSE,warning = FALSE,include=FALSE}
+
+SPsec_N <- c('Technology','Health Care','Financials','Consumer Discretionary','Communication Services','Industrials','Consumer Staples',
+             'Materials','Real Estate','Utilities','Energy')
+SPsec <- c('XLK','XLV','XLF','XLY','XLC','XLI','XLP','XLB','XLRE','XLU','XLE')
+
+
+library(BatchGetSymbols)
+library(ggplot2)
+library(data.table)
+library(quantmod)
+library(plyr)
+library(dplyr)
+library(ggiraph)
+
+time <- Sys.time()
+
+
+first.date <- '2020-01-01'
+last.date <- Sys.Date()
+freq.data <- 'daily'
+
+l.out <- BatchGetSymbols(tickers = SPsec, #all, #tickers2, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+
+
+
+ticks <- l.out$df.tickers
+colms <- c('price.close', 'ticker', 'ref.date')
+ticksdf <- ticks[colms]
+colnames(ticksdf) <- c('Price' ,'ticker','Date' )
+
+#combine Gold and ticker data to express price relative to gold and hyg
+ticksdf <- ticksdf[order(as.Date(ticksdf$Date, format="%Y-%m/%d")),]
+#ticksdf1 <- subset(ticksdf, ticker=='AAPL')
+
+
+
+no_tick <- unique(ticksdf$ticker)
+ticksdf4 <- NULL
+
+for (i in seq_along(no_tick)) {
+  ticker5 <- no_tick[i]
+  ticksdf5 <- subset(ticksdf, ticker==ticker5)
+  # ticksdf5 <-ticksdf5[-c(1:22),]
+  ticksdf5$rel_change <- (ticksdf5$Price/ticksdf5$Price[1])*100
+  ticksdf4 <- rbind.fill(ticksdf4, ticksdf5)
+}
+ticksdf4$category <- 0
+for (i in seq_along(SPsec_N)) {
+  
+  ticksdf4$category <- ifelse(!ticksdf4$ticker == SPsec[i], 
+                               ticksdf4$category, SPsec_N[i])
+}
+p10 <- ggplot(ticksdf4, aes(x = Date, y = rel_change, color=category))+
+geom_line() + ylab('Sectors since begin of 2020') + xlab('')+
+ggthemes::theme_economist()+
+theme(legend.title = element_blank())
+
+my_gg <- p10 + geom_line_interactive(aes(tooltip = category), size = 0.5) 
+
+
+
+```
+
+```{r plotbox, echo=FALSE,warning = FALSE}
+girafe(code = print(my_gg) )
+```
+
+Stocks:
+
+```{r box2, echo=FALSE,warning = FALSE,include=FALSE}
+
+
+#install.packages('BatchGetSymbols')
+#https://cran.r-project.org/web/packages/BatchGetSymbols/vignettes/BatchGetSymbols-vignette.html
+
+library(BatchGetSymbols)
+
+# set dates
+#Sys.setenv(TZ="Etc/GMT+2")
+time <- Sys.time()
+
+first.date <- Sys.Date() - 60
+last.date <- Sys.Date()
+freq.data <- 'daily'
+# set tickers
+tickers <- c('AAPL','NFLX','SPY','GOLD','BRK/B','DIS','CCL','DRI','ZUO','AAL','LULU','DRI','ZM')
+tickers2 <- c('HOG','NKE','V','XOM','GS','IWM','VIX','QQQ','WMT','LUV','HLT','MAR','UBER','LYFT','AMZN','SIX','SEAS','JCP',
+              'PG','KMB','TRIP','LYV','MELI','OKE','AMD','VEEV','MSFT','GOOG','GNC','GME','ULTA','EPHE','EEM','EWZ',
+              'VNQ','VWO','TBA','TAGS','IEMG','XLV','AA','INDL','INDA','EZA','ILF','ISRG','SEDG','XLV') #FRA:TMV
+
+l.out <- BatchGetSymbols(tickers = tickers, 
+                         first.date = first.date,
+                         last.date = last.date, 
+                         freq.data = freq.data,
+                         cache.folder = file.path(tempdir(), 
+                                                  'BGS_Cache') ) # cache in tempdir()
+
+print(l.out$df.control)
+
+
+library(ggplot2)
+
+ticks <- l.out$df.tickers
+colms <- c('price.close', 'ticker', 'ref.date')
+ticksdf <- ticks[colms]
+
+
+
+no_tick <- unique(ticksdf$ticker)
+ticksdf3 <- NULL
+
+for (i in seq_along(no_tick)) {
+  ticker1 <- no_tick[i]
+  ticksdf1 <- subset(ticksdf, ticker==ticker1)
+   ticksdf1 <-ticksdf1[-c(1:22),]
+  ticksdf1$rel_change <-( (ticksdf1$price.close/ticksdf1$price.close[1])-1)*100
+  ticksdf3 <- rbind.fill(ticksdf3, ticksdf1)
+}
+ticksdf3$stockname <- 0
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'AAL', 
+                             ticksdf3$stockname, 'American Airlines')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'AAPL', 
+                             ticksdf3$stockname, 'Apple')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'DIS', 
+                             ticksdf3$stockname, 'Disney')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'LULU', 
+                             ticksdf3$stockname, 'Lulumoon')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'ZM', 
+                             ticksdf3$stockname, 'Zoom video conferences')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'GOLD', 
+                             ticksdf3$stockname, 'Barrock Gold')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'CCL', 
+                             ticksdf3$stockname, 'Carnival Cruise line')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'NFLX', 
+                             ticksdf3$stockname, 'Netflix')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'ZUO', 
+                             ticksdf3$stockname, 'ZUORA')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'SPY', 
+                             ticksdf3$stockname, 'SP500 ETF')
+ticksdf3$stockname <- ifelse(!ticksdf3$ticker == 'DRI', 
+                             ticksdf3$stockname, 'Darden Restaurant')
+
+ticksdf3
+p2 <- ggplot(ticksdf3, aes(x = ref.date, y = rel_change, color=stockname))
+p2 <- p2 + geom_line() + ylab('stock price change [%]') + xlab('')
+p2 <- p2 +ggthemes::theme_economist()
+p2 <- p2 +  theme(legend.title = element_blank())
+#p2 <- p2 + facet_wrap(~ticker, scales = 'free_y') 
+
+
+p <- ggplot(l.out$df.tickers, aes(x = ref.date, y = price.close))
+p <- p + geom_line()
+p <- p + facet_wrap(~ticker, scales = 'free_y') 
+
+print(p2)
+```
+
+```{r plotbox2, echo=FALSE,include=F,warning = FALSE}
+print(p2)
+```
+
