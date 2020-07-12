@@ -1,0 +1,5 @@
+---
+title: "The effect of temporally variable enviroments on molecular changes in cells."
+---
+
+Exposure of cells to diverse types of stressful environments differentially regulate cell fate. Although many types of stresses causing this differential regulation are known, it is unknown how changes over time of the same stressor regulate cell fate. Changes in extracellular osmolarity are critically involved in physiological and pathophysiological processes in several tissues. We observe that human cells survive gradual but not acute hyperosmotic stress. We find that stress, caspase, and apoptosis signaling do not activate during gradual stress in contrast to acute treatments. Contrary to the current paradigm, we see a substantial accumulation of proline in cells treated with gradual but not acute stresses. We show that proline can protect cells from hyperosmotic stress similar to the osmoprotection in plants and bacteria. Our studies found a cell fate switch that enables cells to survive gradually changing stress environments by preventing caspase activation and protect cells through proline accumulation.

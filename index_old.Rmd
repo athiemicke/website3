@@ -21,11 +21,8 @@ Currently, I am preparing a manuscript[[1]](https://athiemicke.com/publications.
 
 ```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
 library(sf)
-library(ggplot2)
-library(ggrepel)
 
-library(ggiraph)
-world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+world <- ne_countries(scale = "medium", returnclass = "sf")
 #class(world)
 # states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
 # states <- cbind(states, st_coordinates(st_centroid(states)))
@@ -34,7 +31,7 @@ world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 
 
 
-#wikipeida
+
 #Jena 	geo:50.927222,11.586111
 #Oslo 	geo:59.916667,10.733333
 #Berkeley 	geo:37.871667,-122.272778
@@ -43,16 +40,15 @@ world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 #Cold spring harbor 	geo:40.861944,-73.467222
 #Irvine 	geo:33.669444,-117.823056
 #Birmingham 		geo:33.653333,-86.808889
-#Kona  	geo:19.65,-155.994167
 
-sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-86.783333,-73.467222,-117.823056,-86.808889,-155.994167
+sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-86.783333,-73.467222,-117.823056,-86.808889
                                    ), latitude = c(50.927222, 59.916667,37.871667,40.439722,36.166667,40.861944,
-                                                                  33.669444,  33.653333,19.65),
+                                                                  33.669444,  33.653333),
                     purpose= c('Education', 'Education', 'Research', 'Research', 'Education', 'Presentation',
-                               'Presentation', 'Presentation', 'Presentation'),
+                               'Presentation', 'Presentation'),
                     Institution=c('Friedrich-Schiller-University Jena','University of Oslo','UC Berkeley',
                                   'University of Pittsburgh', 'Vanderbilt University', 'Cold Spring Harbor',
-                                  'UC Irvine','UA Birmingham','Hawaii'),
+                                  'UC Irvine','UA Birmingham'),
                     explanation=c('Bachelor of Science 2008-2011\nMaster of Science 2011-2014', 
                                   'Erasmus exchange 2010', 
                                   'Master Thesis student 2013/14',
@@ -60,8 +56,7 @@ sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-8
                                   'PhD Candidate 2014-2020',
                                   'CSHL Systems Immunology 2019\nCSHL Cell Death 2019',
                                   'Cell Fate Symposium 2019',
-                                  'Southeastern Immunology 2018\nNSF Computational Modeling Workshop 2019',
-                                  'w-qbio 2020'
+                                  'Southeastern Immunology 2018\nNSF Computational Modeling Workshop 2019'
                                   )
                    #, onclick=sprintf("window.open(\"%s%s\")",'https://athiemicke.com')
                                   
@@ -96,7 +91,7 @@ CV_Map <- ggplot(data = world) +
                          shape = 23) +
   # geom_point(data = sites, aes(x = longitude, y = latitude, color=purpose, fill=purpose), size = 2, 
   #            shape = 23) +
-  coord_sf(xlim = c(-160, 28), ylim = c(18, 73), expand = FALSE)+
+  coord_sf(xlim = c(-138, 28), ylim = c(24.5, 73), expand = FALSE)+
   theme(
     legend.box.background = element_rect(fill = "white", colour = "black"),
    # legend.key = element_rect(fill = "white", colour = "black",size = 1),
