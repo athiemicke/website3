@@ -2,12 +2,16 @@
 title: "Computational Projects"
 #  ## `r fa("flask", fill = "steelblue")` [antisense RNA]
 ---
+```{r box1, echo=FALSE,warning = FALSE,include=FALSE}
+library(fontawesome)
+library(rmarkdown)
+```
 
 I was fortunate to have the oportunity to learn about data analysis and data science during my PhD. I was eager to learn about these to complement and supplement my primary research. I have experience working in Matlab, Python and especially in R. In the following, I illustrate a few examples of how I use programming to access data and vizualize it.
 
 
 
-## `r fa("laptop-code", fill = "steelblue")` [Gene expression vizualization](https://athiemicke.com/Project0.html)
+## `r fontawesome::fa("laptop-code", fill = "steelblue")` [Gene expression vizualization](https://athiemicke.com/Project0.html)
 
 - This project uses data from [Ferreiro et al.](https://www.ncbi.nlm.nih.gov/pubmed/20187982) in which the authors measured chenges in gene expression of MEF cells in hypertonic stress
 - The datasets provides an insight into changes in gene expression in mammalian cells over time. 
@@ -22,7 +26,7 @@ I was fortunate to have the oportunity to learn about data analysis and data sci
 
 
 
-## `r fa("laptop-code", fill = "steelblue")` [Protein Network dynamics](https://athiemicke.com/Project2.html)
+## `r fontawesome::fa("laptop-code", fill = "steelblue")` [Protein Network dynamics](https://athiemicke.com/Project2.html)
 
 - A shiny app that will allow you to explore the dynamics of dozens of proteins in their response to hypertonic stress
 - Explore single-cell distributions of flow cytometry data
@@ -33,13 +37,13 @@ I was fortunate to have the oportunity to learn about data analysis and data sci
 <!-- - A combined dataset of hospice, census and cancer data -->
 <!-- - We applied machine learning algorhitms to uncover hidden trends and connections -->
 
-## `r fa("laptop-code", fill = "steelblue")`  [Nutrition info](https://athiemicke.com/Project4.html)
+## `r fontawesome::fa("laptop-code", fill = "steelblue")`  [Nutrition info](https://athiemicke.com/Project4.html)
 
 - Vizualize contents of nutrients of different foods against each other
 - See the amount of a nutrient per calorie
 
 
-## `r fa("laptop-code", fill = "steelblue")`  [COVID-19](https://athiemicke.com/Project5.html)
+## `r fontawesome::fa("laptop-code", fill = "steelblue")`  [COVID-19](https://athiemicke.com/Project5.html)
 
 - I am using the Google dataset about mobility and correlate it with the total number of death
 for different countries

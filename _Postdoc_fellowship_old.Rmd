@@ -1,0 +1,242 @@
+---
+title: "Postdoc fellowships"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+This is a list of postdoctoral fellowships for international postdocs in the USA. Each fellowship is scored by suitability, amount of awards, funding, allowance and duration. The score is scaled based on the highest value for each category.
+
+
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+rm(list = ls())
+#install.packages("kableExtra")
+#library(libwgeom)
+#install.packages("googleway")
+library(googleway)
+library(knitr)
+library(purrr)
+library(sf)
+library(cowplot)
+#install.packages("ggspatial")
+library(ggspatial)
+#install.packages("rnaturalearth")
+#install.packages("rnaturalearthdata")
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(cowplot)
+library(kableExtra)
+#install.packages('rgeos')
+library(rgeos)
+#install.packages('tools')
+library(tools)
+#install.packages("ggiraph")
+library(ggiraph)
+library(ggrepel)
+#install.packages("maps")
+library(maps)
+library(plyr)
+library(dplyr)
+library(httr)
+library(rvest)
+library(magrittr)
+setwd('~/website3')
+fellow <- read.csv('_Postdoc_Funding.csv')
+
+fellow2 <- data.frame('Fellowship'=c('Phrma Foundation',
+                                     'Jane Coffins Child',
+                                     'Life Sciences Research Foundation',
+                                     'Damon Runyon Cancer Research Foundation',
+                                     'Crohns Colitis Foundation',
+                                     'National Multiple Sclerosis Society',
+                                     'JSM Foundation',
+                                     'American Heart Association',
+                                     'JDRF',
+                                     'Cancer Research Institute',
+                                     'New York Stem cell Foundation',
+                                     'American Diabetes Association',
+                                     'Helen Hay Whitney Foundation',
+                                     'American Society of Nephrology',
+                                     'Molecular Science Software Institute',
+                                     'K99 NIH',
+                                     'American Association for Cancer Research',
+                                     'Childrens Tumor Foundation',
+                                     'American Brain Tumor Association',
+                                     'Lalor Foundation (Reproductive Health)',
+                                     'Health Reseource in Action (Basic Science)',
+                                     'National Hemophilia Foundation',
+                                     'American Federation for Aging Research',
+                                     'American Parkinson Diseases Association',
+                                     'Parkinsons Foundation',
+                                     'Prostatate Cancer Foundation',
+                                     'Herediary Disease Foundation',
+                                     'Cystic Fibrosis Foundation',
+                                     'Hope Funds for Cancer Research'
+  
+),
+
+'Awards(2019)'=c(51,30,27,20,NA,NA,9,255,12,19,
+                             4,31,24,10,15,160,51,4,6,10,
+                             7,2,20,3,5,28,7,NA,3),
+
+
+'contact'=c('foundation@phrma.org','jccfund@yale.edu','direnzo@lsrf.org','awards@damonrunyon.org','grant@crohnscolitisfoundation.org',
+            'Douglas.Landsman@nmss.org','info@jsmf.org','apply@heart.org','preawardsupport@jdrf.org','grants@cancerresearch.org',
+             'fellowship@nyscf.org','grantquestions@diabetes.org','office@hhwf.org','grants@asn-online.org','info@molssi.org',
+            'healthinfo@niddk.nih.gov','aacr@aacr.org','grants@ctf.org','info@abta.org','fellowshipmanager@gmafoundations.com',
+            'lcarver@hria.org','mwitkop@hemophilia.org','afarapplication@afar.org','hgray@apdaparkinson.org','grants@parkinson.org',
+            'info@pcf.org','cures@hdfoundation.org', 'grants@cff.org','grants@hope-funds.org'),
+
+'Link'=c( sprintf("window.open(\"%s%s\")",'http://www.phrmafoundation.org/2018-awards/post-doctoral-fellowships', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://www.jccfund.org/fellowship-information', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'http://www.lsrf.org/apply.htm', as.character('l')),
+          sprintf("window.open(\"%s%s\")",'https://www.damonrunyon.org/for-scientists/award-programs', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://www.crohnscolitisfoundation.org/research/grants-fellowships/research-fellowship-awards', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://www.nationalmssociety.org/For-Professionals/Researchers/Society-Funding/Training-Grants-and-Fellowships/Postdoctoral-Fellowships', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://www.jsmf.org/apply/fellowship', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://professional.heart.org/professional/ResearchPrograms/ApplicationInformation/UCM_443314_Postdoctoral-Fellowship.jsp', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'http://grantcenter.jdrf.org/rfa/postdoctoral-fellowships', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'http://www.cancerresearch.org/scientists/fellowships-grants/post-doctoral-fellows', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://nyscf.org/programs/extramural-grants/applicants/fellowship-awards', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'https://professional.diabetes.org/meetings/core-program', as.character('/')),
+          sprintf("window.open(\"%s%s\")",'http://hhwf.org/research-fellowship', as.character('/')),
+         # sprintf("window.open(\"%s%s\")",'https://www.hfsp.org/funding/hfsp-funding/postdoctoral-fellowships', as.character('/')) canada
+          sprintf("window.open(\"%s%s\")",'https://www.asn-online.org/grants/fellowships', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://molssi.org/the-molssi-software-fellowship-program', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.niddk.nih.gov/research-funding/process/apply/funding-mechanisms/k-awards/k99-r00', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.aacr.org/professionals/research-funding/postdoctoral-and-clinical-research-fellow-grant-recipients', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.ctf.org/research/young-investigator-award-yia', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.abta.org/basic-research-fellowships', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'http://lalorfound.org/postdoctoral-fellowship-program', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://hria.org/tmf/KingBasic', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.hemophilia.org/Researchers-Healthcare-Providers/Research-Grant-Programs/Judith-Graham-Pool-Postdoctoral-Research-Fellowships', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.afar.org/research/funding/glenn-postdoc', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.apdaparkinson.org/research/research-opportunities/postdoctoral-research-fellowships', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.parkinson.org/research/information-for-researchers/early-career-fellowships/postdoctoral?_ga=2.7636154.908996889.1586645682-304117135.1586645682', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.pcf.org/science-impact/the-work-we-fund/young-investigator-awards', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.hdfoundation.org/funding-the-future-2', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'https://www.cff.org/Research/Researcher-Resources/Awards-and-Grants/Training-Awards/Postdoctoral-Research-Fellowship-Award', as.character('/')),
+         sprintf("window.open(\"%s%s\")",'http://www.hope-funds.org/grants/eligibility-and-application', as.character('/'))
+
+         
+          # sprintf("window.open(\"%s%s\")",'https://www.hdfoundation.org/funding-the-future-2', as.character('/'))
+          
+),
+'Deadline'=c(07/01,02/03,10/01,08/15,07/20,
+             08/21,06/12,08/15,07/02,10/01,
+             01/08,11/16,07/15,12/02,10/01,
+             11/12,05/26,06/20,12/01,01/15,
+             03/04,'2021','2021','2021','2021','2021','2021','2021','2021'),
+'LOI'=c(05/15,NA,NA,NA,05/05,
+        08/14,NA,NA,NA,NA,
+        NA,NA,NA,NA,NA,
+        NA,NA,01/03,11/01,
+        NA),
+'Suitability'=c(60,100,90,80,20,
+                40,5,70,40,75,
+                90,60,80,25,35,
+                10,85,5,10,10,
+                90),
+#'adjAwardsscore' = c(),
+'fundingamount' = c(50000,54000,52000,55750,45000,
+                    NA,66667,61040,45000,57000,
+                    57500,55000,57000,50000,50000,
+                    90000,75000,45250,50000,52000,
+                    550000),
+'fundingduration' = c(2,3,3,4,3,
+                      NA,3,2,3,3,
+                      3,3,3,2,1,
+                      2,3,2,2,2,
+                      2),
+'allowance' = c(0,3800,10000,2000,11250,
+                7850,0,3000,5500,1500,
+                2500,10000,1500,0,0,
+                0,0,0,0,0,
+                2000),
+#fundingscore = c(),
+#durationscore = c(),
+#allownacescore = c(),
+success_rate=c(NA,NA,2.7,NA,NA,
+               NA,NA,43,NA,NA,
+               NA,NA,5,NA,NA,
+               29.7,NA,NA,NA,NA,
+               20),
+it_per_year=c(1,1,1,2,2,
+              1,1,1,1,1,
+              1,1,1,1,2,
+              3,1,1,1,1,
+              1),
+'comments' = c(NA,NA,NA,NA,NA,
+               'salary and duration are requested during appliaction',
+               'This Fellowship is not intended for individuals that already have completed a Ph.D. or students that have already identified a postdoctoral position and a postdoctoral mentor as traditional funding mechanisms are better suited to these students.   Such applications are ineligible for consideration.',
+               NA,
+               NA,
+               NA,
+               'New York area specific',
+               NA,
+               NA,
+               NA,
+               'collaboration with the MolSSI scientists',
+               NA,
+               NA,
+               'YIA',
+               NA,
+               NA,
+               NA
+               )
+#score = 
+
+)
+
+fellow2$truelink <- gsub("^.*?h","h",fellow2$Link)
+fellow2$truelink <-substr(fellow2$truelink, 1, nchar(fellow2$truelink)-1) 
+
+
+
+
+```
+
+
+```{r table-fellow, echo=FALSE,warning = FALSE}
+# dt <- fellow[1:6, 1:7]
+# dt %>%
+# mutate_all(as.character)
+# 
+# dim(dt)
+# dt1 <- subset(dt, grepl("PhD", dt$Degree.Requirement) |grepl("Ph.D", dt$Degree.Requirement) )
+# dt1 <- subset(dt1, grepl("None", dt1$Citizenship.Requirement) |grepl("visa", dt1$Citizenship.Requirement) | grepl("non-U.S.", dt1$Citizenship.Requirement) )
+# dim(dt1)
+fellow3 <- fellow2[1:4]
+fellow3 %>% 
+  mutate(Fellowship = cell_spec(fellow2$Fellowship, "html", link = fellow2$truelink)) %>%
+  kable("html", escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F) %>%
+   column_spec(1, bold = T, border_right = T)# %>%
+
+
+#dt %>%
+#fellow3 <- fellow2$ %>% 
+#  fellow2 <- mutate(fellow2, Fellowship = cell_spec(fellow2$Fellowship, link = fellow2$truelink,format = 'html'))
+# 
+# kableExtra::kable(fellow2,escape = T, format = 'html') %>%
+#  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F) %>%
+#    column_spec(1, bold = T, border_right = T)# %>%
+# text_spec(fellow2$Fellowship, link = fellow2$truelink,format = 'html')
+ 
+  #column_spec(5:7, bold = T) %>%
+  #row_spec(3:5, bold = T, color = "white", background = "#D7261E")
+ # add_header_above(c("a" = 5, "b" = 18)) %>%
+ # kable_styling() #%>%
+  #scroll_box(width = "100%", height = "200px")
+#kable(fellow) %>%
+#  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+```{r plotbox, echo=FALSE,warning = FALSE}
+
+```
+
+

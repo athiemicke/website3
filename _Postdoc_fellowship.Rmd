@@ -1,16 +1,15 @@
 ---
-title: "Postdoc fellowships"
+title: "Postdoctoral fellowships"
 output:
-  html_document:
-    df_print: paged
-  pdf_document: default
+   always_allow_html: true
+ 
 ---
 
-This is a list of postdoctoral fellowships for international postdocs in the USA. Each fellowship is scored by suitability, amount of awards, funding, allowance and duration. The score is scaled based on the highest value for each category.
 
 
 ```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
 rm(list = ls())
+#https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
 #install.packages("kableExtra")
 #library(libwgeom)
 #install.packages("googleway")
@@ -41,8 +40,30 @@ library(dplyr)
 library(httr)
 library(rvest)
 library(magrittr)
-setwd('~/website')
+setwd('~/website3')
 fellow <- read.csv('_Postdoc_Funding.csv')
+#potential addtl. fellowships
+#https://www.bwfund.org/programs-offered
+#https://www.fraxa.org/fragile-x-research/grant-application/
+#https://pva.org/research-resources/research-foundation/
+#https://www.daad.org/en/find-funding/phd-postdocs/postdoctoral-researchers-international-mobility-experience-p-r-i-m-e/
+#https://grants.nih.gov/grants/funding/ac_search_results.htm?text_curr=f05&Search.x=0&Search.y=0&Search_Type=Activity
+#https://www.eacr.org/content/jobs.php
+#http://leader.unisannio.it/scholarships.html
+#https://www.embo.org/funding-awards/fellowships/postdoctoral-fellowships#eligibility
+#https://www.embo.org/funding-awards/fellowships/postdoctoral-fellowships/embo-long-term-fellowship-awards
+#https://www.cirm.ca.gov/researchers/funding-opportunities
+#https://www.dfg.de/foerderung/programme/einzelfoerderung/walter_benjamin/index.html
+#https://www.dfg.de/foerderung/programme/einzelfoerderung/forschungsstipendien/
+#https://dceg.cancer.gov/fellowship-training/become-a-fellow/research-training-areas/oeeb-specific-investigators
+#https://www.profellow.com/fellowships/27-postdoctoral-fellowships-in-medicine-and-public-health/
+#https://www.embl.de/training/postdocs/06-funding_opportunities/
+#https://engelhorn-stiftung.de/index.php/stipendium-bewerbung.php deutschsprachiger raum
+#https://www.fritz-thyssen-stiftung.de/foerderung/foerderarten/postdoc-stipendien/
+#https://ec.europa.eu/research/mariecurieactions/actions/individual-fellowships_en
+#https://www.aesnet.org/research/funding%20for%20junior%20investigators/Post-Doctoral%20Research%20Fellowships
+#https://www.dfg.de/en/research_funding/programmes/individual/emmy_noether/index.html
+#https://www.toyotafound.or.jp/english/special/2020/
 
 fellow2 <- data.frame('Fellowship'=c('Phrma Foundation',
                                      'Jane Coffins Child',
@@ -76,7 +97,7 @@ fellow2 <- data.frame('Fellowship'=c('Phrma Foundation',
   
 ),
 
-'Awards(2019)'=c(51,30,27,20,NA,NA,9,255,12,19,
+'Awards_2019'=c(51,30,27,20,NA,NA,9,255,12,19,
                              4,31,24,10,15,160,51,4,6,10,
                              7,2,20,3,5,28,7,NA,3),
 
@@ -123,50 +144,56 @@ fellow2 <- data.frame('Fellowship'=c('Phrma Foundation',
           # sprintf("window.open(\"%s%s\")",'https://www.hdfoundation.org/funding-the-future-2', as.character('/'))
           
 ),
-'Deadline'=c(07/01,02/03,10/01,08/15,07/20,
-             08/21,06/12,08/15,07/02,10/01,
-             01/08,11/16,07/15,12/02,10/01,
-             11/12,05/26,06/20,12/01,01/15,
-             03/04,'2021','2021','2021','2021','2021','2021','2021','2021'),
-'LOI'=c(05/15,NA,NA,NA,05/05,
-        08/14,NA,NA,NA,NA,
-        NA,NA,NA,NA,NA,
-        NA,NA,01/03,11/01,
-        NA),
-'Suitability'=c(60,100,90,80,20,
-                40,5,70,40,75,
-                90,60,80,25,35,
-                10,85,5,10,10,
-                90),
-#'adjAwardsscore' = c(),
+'Deadline'=format(as.Date(c('07/01','02/03','10/01','08/15','07/20',
+             '08/21','06/12','08/15','07/02','10/01',
+            '01/08','11/16','07/15','12/02','10/01',
+             '11/12','05/26','06/20','12/01','01/15',
+             '03/04','NA','04/15','03/12','02/18',
+             'NA','04/17','12/07','01/25'), format="%m/%d")),
+'LOI'=format(as.Date(c('05/15','NA','NA','NA','05/05',
+        '08/14','NA','NA','NA','NA',
+        'NA','NA','NA','NA','NA',
+        'NA','NA','01/03','11/01','NA',
+        'NA','NA','01/22','NA','11/12',
+        'NA','02/01','NA','09/18'), format="%m/%d")),
+'Suitability'=c(70,100,95,85,25,
+                45,25,75,45,80,
+                95,65,85,35,45,
+                20,90,25,30,30,
+                95,15,95,15,15,
+                30,20,30,90),
+
 'fundingamount' = c(50000,54000,52000,55750,45000,
                     NA,66667,61040,45000,57000,
                     57500,55000,57000,50000,50000,
                     90000,75000,45250,50000,52000,
-                    550000),
+                    55000,52000,52000,50000,55000,
+                    NA,75000,51000,52000),
 'fundingduration' = c(2,3,3,4,3,
                       NA,3,2,3,3,
                       3,3,3,2,1,
                       2,3,2,2,2,
-                      2),
+                      2,2,1,1,2,
+                      NA,2,2,3),
 'allowance' = c(0,3800,10000,2000,11250,
                 7850,0,3000,5500,1500,
                 2500,10000,1500,0,0,
                 0,0,0,0,0,
-                2000),
-#fundingscore = c(),
-#durationscore = c(),
-#allownacescore = c(),
-success_rate=c(NA,NA,2.7,NA,NA,
+                2000,0,8000,0,5000,
+                NA,10000,9000,1500),
+
+'success_rate'=c(NA,NA,2.7,NA,NA,
                NA,NA,43,NA,NA,
                NA,NA,5,NA,NA,
                29.7,NA,NA,NA,NA,
-               20),
-it_per_year=c(1,1,1,2,2,
+               20,NA,NA,NA,NA,
+               NA,NA,NA,NA),
+'it_per_year'=c(1,1,1,2,2,
               1,1,1,1,1,
               1,1,1,1,2,
               3,1,1,1,1,
-              1),
+              1,1,1,1,1,
+              NA,1,2,1),
 'comments' = c(NA,NA,NA,NA,NA,
                'salary and duration are requested during appliaction',
                'This Fellowship is not intended for individuals that already have completed a Ph.D. or students that have already identified a postdoctoral position and a postdoctoral mentor as traditional funding mechanisms are better suited to these students.   Such applications are ineligible for consideration.',
@@ -183,6 +210,14 @@ it_per_year=c(1,1,1,2,2,
                'YIA',
                NA,
                NA,
+               NA,
+               NA,
+               NA,
+               NA,
+               NA,
+               'YIA',
+               NA,
+               NA,
                NA
                )
 #score = 
@@ -193,7 +228,31 @@ fellow2$truelink <- gsub("^.*?h","h",fellow2$Link)
 fellow2$truelink <-substr(fellow2$truelink, 1, nchar(fellow2$truelink)-1) 
 
 
+fellow2$fundingscore <- (100*fellow2$fundingamount)/max(fellow2$fundingamount, na.rm = T)
+fellow2$durationscore <- (100*fellow2$fundingduration)/max(fellow2$fundingduration, na.rm = T)
+fellow2$allownacescore <- (100*fellow2$allowance)/max(fellow2$allowance, na.rm = T)
+fellow2$adjAwardsscore <- (100*fellow2$Awards_2019)/max(fellow2$Awards_2019, na.rm = T)
 
+fellow2$score <- round(rowMeans(fellow2[c(7,7,7,7,7,15,16,17,18,18)], na.rm = T),digits = 2)
+
+#fellow2$Deadline[is.na(fellow2$Deadline)] <-0 # as.Date('2020-01-01')
+fellow2_1 <- NULL
+fellow2_2 <- fellow2[is.na(fellow2$Deadline),]
+fellow2 <- fellow2[!is.na(fellow2$Deadline),]
+
+for (i in seq_along(fellow2$Fellowship)) {
+ adjdates <- fellow2[i,]
+ 
+ daaatee <- Sys.Date()
+  if(daaatee > as.Date(adjdates$Deadline)){
+    adjdates$Deadline <-  seq.Date(as.Date(adjdates$Deadline), length.out = 2, by = "year")[2]
+  }
+ fellow2_1 <- rbind.fill(fellow2_1, adjdates)
+                        #  seq.Date(as.Date(adjdates$Deadline), length.out = 2, by = "year")[2], 
+      #  as.Date(adjdates$Deadline))
+  
+}
+fellow2_3 <- rbind.fill(fellow2_1,fellow2_2)
 
 ```
 
@@ -207,12 +266,46 @@ fellow2$truelink <-substr(fellow2$truelink, 1, nchar(fellow2$truelink)-1)
 # dt1 <- subset(dt, grepl("PhD", dt$Degree.Requirement) |grepl("Ph.D", dt$Degree.Requirement) )
 # dt1 <- subset(dt1, grepl("None", dt1$Citizenship.Requirement) |grepl("visa", dt1$Citizenship.Requirement) | grepl("non-U.S.", dt1$Citizenship.Requirement) )
 # dim(dt1)
-fellow3 <- fellow2[1:4]
+fellow2_3 <- fellow2_3[order(as.Date(fellow2_3$Deadline)),]
+fellow3 <- fellow2_3[c(1:3,5,6,7,8,9,10,19)]
+
+my_palette <- colorRampPalette(c("red", "yellow", "green"))(n = 100)
+#fellow3 <- sapply(1:nrow(fellow3), row_spec(background =factor(1:nrow(fellow3), fellow3$score,  my_palette[fellow3$score])))
+
+
+ popover = spec_popover(
+    content = fellow3$comment,
+    title = NULL,                           # title will add a Title Panel on top
+    position = fellow3$comment
+  )
+
 fellow3 %>% 
-  mutate(Fellowship = cell_spec(fellow2$Fellowship, "html", link = fellow2$truelink)) %>%
+  mutate(Fellowship = cell_spec(fellow2_3$Fellowship, "html", link = fellow2_3$truelink #,color='black'
+                                #,background = my_palette[fellow3$score]
+                                ) ,
+  #       Fellowship = spec_popover(
+  #   content = fellow3$comment,
+  #   title = NULL,                           # title will add a Title Panel on top
+  #   position = fellow3$comment
+  # ),
+         score = cell_spec(score,background = my_palette[fellow3$score]),
+       #   contact = cell_spec(contact,background = my_palette[fellow3$score]),
+          Awards_2019 = cell_spec(Awards_2019,background = my_palette[fellow3$score]),
+          Deadline = cell_spec(Deadline,background = my_palette[fellow3$score]),
+          LOI = cell_spec(LOI,background = my_palette[fellow3$score]),
+         Suitability = cell_spec(Suitability,background = my_palette[fellow3$score]),
+        fundingamount = cell_spec(fundingamount,background = my_palette[fellow3$score]),
+         fundingduration = cell_spec(fundingduration,background = my_palette[fellow3$score]),
+          allowance = cell_spec(allowance,background = my_palette[fellow3$score]),
+
+         
+         ) %>%
   kable("html", escape = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F) %>%
-   column_spec(1, bold = T, border_right = T)# %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T) %>%
+   column_spec(1, bold = T, border_right = T) #%>%
+ # cell_spec(score, bold = T, color = "white", background =factor(score, fellow3$score,  my_palette[fellow3$score]))
+
+
 
 
 #dt %>%
@@ -234,6 +327,9 @@ fellow3 %>%
 
 ```
 
+
+This is a list of postdoctoral fellowships for international postdocs in the USA (no citizenship/green card requirement). Each fellowship aims to fund mentored postdoctoral scholars who do biomedical research. I obtained the information about each fellowship from the fellowship website (Fellowship column). The obtained values are Fellowship Sponsor ("Fellowship"), Fellowships awarded in 2019 ("Awards_2019"), main email contact ("contact"), application submission deadline ("Deadline"), letter of intent deadline ("LOI"), a subjective suitability score (ranging from 0 - not suitable to 100 - very suitable) for basic cell cycle related research projects ("Suitability"), the funding amount/year ("fundingamount"), the maximum duration of the fellowship ("fundingduration"), the allowance funding ("allowance") and an overall score ("score", calculate by weighted 50% Suitability score, 30% funding score, 20% Fellowships awarded in 2019 score).  Fields that are 'NA' could not be obtained through the fellowship website.
+The fellowships are ranked by date of deadline, from closest to furthest into the future. The highlighted colors represent the overall score from green (highest score), to yellow (intermeidate score), to red (lowest score).
 
 ```{r plotbox, echo=FALSE,warning = FALSE}
 
