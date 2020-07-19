@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>In and out bars</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/d3-5.7.0/d3.min.js"></script>
+<script src="site_libs/d3-lasso-0.0.5/d3-lasso.min.js"></script>
+<link href="site_libs/ggiraphjs-0.2.0/styles.css" rel="stylesheet" />
+<script src="site_libs/ggiraphjs-0.2.0/ggiraphjs.min.js"></script>
+<script src="site_libs/girafe-binding-0.7.0/girafe.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Alexander Thiemicke</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About</a>
+</li>
+<li>
+  <a href="publications.html">Publications</a>
+</li>
+<li>
+  <a href="projects.html">Projects</a>
+</li>
+<li>
+  <a href="Alexander_Thiemicke_CV_web.pdf">CV</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:alexander.thiemicke@vanderbilt.edu">
+    <span class="fa fa-envelope"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/alexander-thiemicke/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/alexthie">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">In and out bars</h1>
+
+</div>
+
+
+<p>Distribution of income and expenses.</p>
+<div id="htmlwidget-95a4939f09382bcfc9f7" style="width:672px;height:480px;" class="girafe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-95a4939f09382bcfc9f7">{"x":{"html":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0\" viewBox=\"0 0 432.00 360.00\">\n  <g>\n    <defs>\n      <clipPath id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_1\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"360.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"360.00\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_1\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_1)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"0.75\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_2\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"360.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"-0.00\" y=\"0.00\" width=\"432.00\" height=\"360.00\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_2\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_2)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3\">\n        <rect x=\"50.87\" y=\"5.48\" width=\"308.47\" height=\"322.78\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"50.87\" y=\"5.48\" width=\"308.47\" height=\"322.78\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_3\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke=\"none\"/>\n    <polyline points=\"50.87,268.10 359.34,268.10\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_4\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,182.60 359.34,182.60\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_5\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,97.10 359.34,97.10\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_6\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,11.60 359.34,11.60\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_7\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,310.85 359.34,310.85\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_8\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,225.35 359.34,225.35\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_9\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,139.85 359.34,139.85\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_10\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"50.87,54.35 359.34,54.35\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_11\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"73.44,328.26 73.44,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_12\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"111.06,328.26 111.06,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_13\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"148.68,328.26 148.68,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_14\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"186.30,328.26 186.30,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_15\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"223.92,328.26 223.92,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_16\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"261.54,328.26 261.54,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_17\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"299.15,328.26 299.15,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_18\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"336.77,328.26 336.77,5.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_19\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#EBEBEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"56.51\" y=\"139.85\" width=\"33.86\" height=\"14.55\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_20\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-851_Utilities\"/>\n    <rect x=\"56.51\" y=\"154.40\" width=\"33.86\" height=\"7.87\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_21\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-460_Personal and other services\"/>\n    <rect x=\"56.51\" y=\"162.27\" width=\"33.86\" height=\"6.12\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_22\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-358_Groceries\"/>\n    <rect x=\"56.51\" y=\"168.39\" width=\"33.86\" height=\"4.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_23\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-291_Automotive\"/>\n    <rect x=\"56.51\" y=\"173.37\" width=\"33.86\" height=\"25.22\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_24\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Travel\" title=\"-1475_Travel\"/>\n    <rect x=\"56.51\" y=\"198.59\" width=\"33.86\" height=\"2.38\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_25\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-139_Dining\"/>\n    <rect x=\"56.51\" y=\"200.96\" width=\"33.86\" height=\"22.83\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_26\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-1335_House related\"/>\n    <rect x=\"56.51\" y=\"138.57\" width=\"33.86\" height=\"1.28\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_27\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"75_Banking boni and fees\"/>\n    <rect x=\"94.13\" y=\"139.85\" width=\"33.86\" height=\"9.75\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_28\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-570_House related\"/>\n    <rect x=\"56.51\" y=\"127.59\" width=\"33.86\" height=\"10.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_29\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"642_investment proceeds\"/>\n    <rect x=\"56.51\" y=\"118.18\" width=\"33.86\" height=\"9.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_30\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"550_rental income\"/>\n    <rect x=\"94.13\" y=\"149.60\" width=\"33.86\" height=\"79.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_31\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Travel\" title=\"-4635_Travel\"/>\n    <rect x=\"56.51\" y=\"76.17\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_32\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"94.13\" y=\"97.84\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_33\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"94.13\" y=\"228.85\" width=\"33.86\" height=\"6.33\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_34\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-370_Utilities\"/>\n    <rect x=\"94.13\" y=\"78.96\" width=\"33.86\" height=\"18.88\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_35\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"1104_investment proceeds\"/>\n    <rect x=\"94.13\" y=\"235.18\" width=\"33.86\" height=\"5.87\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_36\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-343_Personal and other services\"/>\n    <rect x=\"94.13\" y=\"241.05\" width=\"33.86\" height=\"4.82\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_37\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-282_Automotive\"/>\n    <rect x=\"94.13\" y=\"245.87\" width=\"33.86\" height=\"0.41\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_38\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"-24_Banking boni and fees\"/>\n    <rect x=\"94.13\" y=\"246.28\" width=\"33.86\" height=\"3.73\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_39\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-218_Groceries\"/>\n    <rect x=\"94.13\" y=\"250.01\" width=\"33.86\" height=\"2.96\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_40\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-173_Dining\"/>\n    <rect x=\"131.75\" y=\"139.85\" width=\"33.86\" height=\"139.76\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_41\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"-8173_investment proceeds\"/>\n    <rect x=\"131.75\" y=\"279.61\" width=\"33.86\" height=\"9.75\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_42\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-570_House related\"/>\n    <rect x=\"131.75\" y=\"289.35\" width=\"33.86\" height=\"7.97\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_43\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-466_Dining\"/>\n    <rect x=\"131.75\" y=\"297.32\" width=\"33.86\" height=\"5.15\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_44\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-301_Groceries\"/>\n    <rect x=\"131.75\" y=\"302.47\" width=\"33.86\" height=\"4.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_45\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-291_Utilities\"/>\n    <rect x=\"131.75\" y=\"307.45\" width=\"33.86\" height=\"4.33\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_46\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-253_Automotive\"/>\n    <rect x=\"131.75\" y=\"311.77\" width=\"33.86\" height=\"1.81\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_47\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-106_Personal and other services\"/>\n    <rect x=\"169.37\" y=\"139.85\" width=\"33.86\" height=\"9.75\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_48\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-570_House related\"/>\n    <rect x=\"169.37\" y=\"149.60\" width=\"33.86\" height=\"8.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_49\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-491_Groceries\"/>\n    <rect x=\"169.37\" y=\"157.99\" width=\"33.86\" height=\"5.90\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_50\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-345_Personal and other services\"/>\n    <rect x=\"169.37\" y=\"163.89\" width=\"33.86\" height=\"5.22\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_51\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-305_Utilities\"/>\n    <rect x=\"169.37\" y=\"169.11\" width=\"33.86\" height=\"4.84\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_52\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-283_Automotive\"/>\n    <rect x=\"206.99\" y=\"139.85\" width=\"33.86\" height=\"9.83\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_53\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-575_House related\"/>\n    <rect x=\"206.99\" y=\"149.68\" width=\"33.86\" height=\"8.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_54\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-525_Groceries\"/>\n    <rect x=\"206.99\" y=\"158.66\" width=\"33.86\" height=\"0.84\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_55\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"-49_Banking boni and fees\"/>\n    <rect x=\"206.99\" y=\"159.50\" width=\"33.86\" height=\"5.78\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_56\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-338_Personal and other services\"/>\n    <rect x=\"206.99\" y=\"165.28\" width=\"33.86\" height=\"4.57\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_57\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-267_Automotive\"/>\n    <rect x=\"206.99\" y=\"169.84\" width=\"33.86\" height=\"3.92\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_58\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-229_Utilities\"/>\n    <rect x=\"206.99\" y=\"173.76\" width=\"33.86\" height=\"0.34\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_59\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Travel\" title=\"-20_Travel\"/>\n    <rect x=\"206.99\" y=\"174.10\" width=\"33.86\" height=\"0.31\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_60\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-18_Dining\"/>\n    <rect x=\"206.99\" y=\"174.41\" width=\"33.86\" height=\"29.53\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_61\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"-1727_investment proceeds\"/>\n    <rect x=\"244.61\" y=\"139.85\" width=\"33.86\" height=\"1.39\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_62\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-81_Automotive\"/>\n    <rect x=\"131.75\" y=\"132.22\" width=\"33.86\" height=\"7.63\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_63\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"446_Banking boni and fees\"/>\n    <rect x=\"131.75\" y=\"90.21\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_64\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"131.75\" y=\"48.25\" width=\"33.86\" height=\"41.96\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_65\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Travel\" title=\"2454_Travel\"/>\n    <rect x=\"131.75\" y=\"29.44\" width=\"33.86\" height=\"18.81\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_66\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"1100_rental income\"/>\n    <rect x=\"169.37\" y=\"130.44\" width=\"33.86\" height=\"9.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_67\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"550_rental income\"/>\n    <rect x=\"169.37\" y=\"88.43\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_68\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"169.37\" y=\"88.19\" width=\"33.86\" height=\"0.24\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_69\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"14_Banking boni and fees\"/>\n    <rect x=\"169.37\" y=\"67.67\" width=\"33.86\" height=\"20.52\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_70\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Covid-19 stimulus\" title=\"1200_Covid-19 stimulus\"/>\n    <rect x=\"169.37\" y=\"48.74\" width=\"33.86\" height=\"18.93\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_71\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"1107_investment proceeds\"/>\n    <rect x=\"206.99\" y=\"130.44\" width=\"33.86\" height=\"9.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_72\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"550_rental income\"/>\n    <rect x=\"206.99\" y=\"88.43\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_73\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"244.61\" y=\"141.23\" width=\"33.86\" height=\"9.75\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_74\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-570_House related\"/>\n    <rect x=\"244.61\" y=\"150.98\" width=\"33.86\" height=\"78.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_75\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"-4619_investment proceeds\"/>\n    <rect x=\"244.61\" y=\"130.44\" width=\"33.86\" height=\"9.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_76\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"550_rental income\"/>\n    <rect x=\"244.61\" y=\"229.97\" width=\"33.86\" height=\"6.24\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_77\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-365_Utilities\"/>\n    <rect x=\"244.61\" y=\"236.21\" width=\"33.86\" height=\"6.00\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_78\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-351_Groceries\"/>\n    <rect x=\"244.61\" y=\"242.21\" width=\"33.86\" height=\"3.54\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_79\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-207_Dining\"/>\n    <rect x=\"244.61\" y=\"245.75\" width=\"33.86\" height=\"2.87\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_80\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"car loan\" title=\"-168_car loan\"/>\n    <rect x=\"244.61\" y=\"248.62\" width=\"33.86\" height=\"20.13\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_81\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-1177_Personal and other services\"/>\n    <rect x=\"282.23\" y=\"139.85\" width=\"33.86\" height=\"12.79\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_82\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-748_Personal and other services\"/>\n    <rect x=\"282.23\" y=\"152.64\" width=\"33.86\" height=\"6.33\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_83\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-370_House related\"/>\n    <rect x=\"282.23\" y=\"158.97\" width=\"33.86\" height=\"5.68\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_84\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-332_Utilities\"/>\n    <rect x=\"244.61\" y=\"88.43\" width=\"33.86\" height=\"42.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_85\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2457_salary\"/>\n    <rect x=\"244.61\" y=\"88.26\" width=\"33.86\" height=\"0.17\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_86\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"10_Banking boni and fees\"/>\n    <rect x=\"282.23\" y=\"164.64\" width=\"33.86\" height=\"5.04\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_87\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-295_Groceries\"/>\n    <rect x=\"282.23\" y=\"64.29\" width=\"33.86\" height=\"75.56\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_88\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"4419_investment proceeds\"/>\n    <rect x=\"282.23\" y=\"169.69\" width=\"33.86\" height=\"0.44\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_89\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-26_Automotive\"/>\n    <rect x=\"282.23\" y=\"170.13\" width=\"33.86\" height=\"2.58\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_90\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-151_Dining\"/>\n    <rect x=\"282.23\" y=\"64.29\" width=\"33.86\" height=\"0.00\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_91\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"0_Banking boni and fees\"/>\n    <rect x=\"319.84\" y=\"139.85\" width=\"33.86\" height=\"11.14\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_92\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"House related\" title=\"-651.4_House related\"/>\n    <rect x=\"319.84\" y=\"138.70\" width=\"33.86\" height=\"1.15\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_93\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Banking boni and fees\" title=\"67.4_Banking boni and fees\"/>\n    <rect x=\"319.84\" y=\"150.99\" width=\"33.86\" height=\"8.98\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_94\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Travel\" title=\"-525.1_Travel\"/>\n    <rect x=\"319.84\" y=\"130.64\" width=\"33.86\" height=\"8.06\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_95\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"rental income\" title=\"471.4_rental income\"/>\n    <rect x=\"319.84\" y=\"159.97\" width=\"33.86\" height=\"8.59\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_96\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Personal and other services\" title=\"-502.4_Personal and other services\"/>\n    <rect x=\"319.84\" y=\"168.56\" width=\"33.86\" height=\"6.70\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_97\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Utilities\" title=\"-391.9_Utilities\"/>\n    <rect x=\"319.84\" y=\"175.26\" width=\"33.86\" height=\"6.20\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_98\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Groceries\" title=\"-362.7_Groceries\"/>\n    <rect x=\"319.84\" y=\"181.46\" width=\"33.86\" height=\"0.41\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_99\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"car loan\" title=\"-24_car loan\"/>\n    <rect x=\"319.84\" y=\"181.87\" width=\"33.86\" height=\"3.62\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_100\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Automotive\" title=\"-211.9_Automotive\"/>\n    <rect x=\"319.84\" y=\"94.62\" width=\"33.86\" height=\"36.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_101\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"salary\" title=\"2106_salary\"/>\n    <rect x=\"319.84\" y=\"91.69\" width=\"33.86\" height=\"2.93\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_102\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Covid-19 stimulus\" title=\"171.4_Covid-19 stimulus\"/>\n    <rect x=\"319.84\" y=\"185.50\" width=\"33.86\" height=\"2.82\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_103\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"Dining\" title=\"-164.9_Dining\"/>\n    <rect x=\"319.84\" y=\"188.32\" width=\"33.86\" height=\"17.70\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_104\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"miter\" stroke-linecap=\"square\" data-id=\"investment proceeds\" title=\"-1035.3_investment proceeds\"/>\n    <line x1=\"50.87\" y1=\"139.85\" x2=\"359.34\" y2=\"139.85\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_105\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" stroke-width=\"1.06698\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#000000\" fill-opacity=\"1\"/>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"55.26\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_106\" font-size=\"10.67pt\" fill=\"#D39D00\" fill-opacity=\"1\" font-family=\"Helvetica\">-1185<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"92.88\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_107\" font-size=\"10.67pt\" fill=\"#EF6600\" fill-opacity=\"1\" font-family=\"Helvetica\">-3054<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"130.50\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_108\" font-size=\"10.67pt\" fill=\"#F64C00\" fill-opacity=\"1\" font-family=\"Helvetica\">-3703<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"170.48\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_109\" font-size=\"10.67pt\" fill=\"#00FF00\" fill-opacity=\"1\" font-family=\"Helvetica\">3334<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"209.69\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_110\" font-size=\"10.67pt\" fill=\"#CBA700\" fill-opacity=\"1\" font-family=\"Helvetica\">-741<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"243.35\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_111\" font-size=\"10.67pt\" fill=\"#FF0000\" fill-opacity=\"1\" font-family=\"Helvetica\">-4521<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"283.34\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_112\" font-size=\"10.67pt\" fill=\"#68EE00\" fill-opacity=\"1\" font-family=\"Helvetica\">2497<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\">\n      <text x=\"312.66\" y=\"25.25\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_113\" font-size=\"10.67pt\" fill=\"#D1A000\" fill-opacity=\"1\" font-family=\"Helvetica\">-1053.4<\/text>\n    <\/g>\n    <rect x=\"50.87\" y=\"5.48\" width=\"308.47\" height=\"322.78\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_114\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"360.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"18.55\" y=\"314.00\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_115\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Helvetica\">-10000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"23.44\" y=\"228.51\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_116\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Helvetica\">-5000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"41.05\" y=\"143.01\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_117\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Helvetica\">0<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"26.37\" y=\"57.51\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_118\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Helvetica\">5000<\/text>\n    <\/g>\n    <polyline points=\"48.13,310.85 50.87,310.85\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_119\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"48.13,225.35 50.87,225.35\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_120\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"48.13,139.85 50.87,139.85\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_121\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"48.13,54.35 50.87,54.35\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_122\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"73.44,331.00 73.44,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_123\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"111.06,331.00 111.06,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_124\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"148.68,331.00 148.68,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_125\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"186.30,331.00 186.30,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_126\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"223.92,331.00 223.92,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_127\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"261.54,331.00 261.54,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_128\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"299.15,331.00 299.15,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_129\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"336.77,331.00 336.77,328.26\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_130\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"68.55\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_131\" font-size=\"6.60pt\" font-family=\"Helvetica\">01<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"106.17\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_132\" font-size=\"6.60pt\" font-family=\"Helvetica\">02<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"143.79\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_133\" font-size=\"6.60pt\" font-family=\"Helvetica\">03<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"181.41\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_134\" font-size=\"6.60pt\" font-family=\"Helvetica\">04<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"219.02\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_135\" font-size=\"6.60pt\" font-family=\"Helvetica\">05<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"256.64\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_136\" font-size=\"6.60pt\" font-family=\"Helvetica\">06<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"294.26\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_137\" font-size=\"6.60pt\" font-family=\"Helvetica\">07<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"320.39\" y=\"340.48\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_138\" font-size=\"6.60pt\" font-family=\"Helvetica\">Average<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"176.06\" y=\"352.08\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_139\" font-size=\"8.25pt\" font-family=\"Helvetica\">month 2020<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text transform=\"translate(13.37,178.48) rotate(-90)\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_140\" font-size=\"8.25pt\" font-family=\"Helvetica\">USD<\/text>\n    <\/g>\n    <rect x=\"370.30\" y=\"115.45\" width=\"56.22\" height=\"102.84\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_141\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke=\"none\"/>\n    <image xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"375.78\" y=\"126.41\" width=\"17.28\" height=\"86.40\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_142\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAFaCAYAAACjTSvQAAAABmJLR0QA/wD/AP+gvaeTAAAEOElEQVR4nO3dO7LiWBAE0BKICHoXs+9e5hgQ0w80Bl6TKVcyzlmBoiKr7gcQy2yzDX/753L0E5yVwhQKUyhMoTCFwhQKUyhMsV5t7768lpl1PfopTug2M+tNYr78SEy2zsy6SsyXn5lZb0c/xQndRmKiTysd/RQnZVUKrk+JibZRmOg6hm+0jeU6kpjCjCmuY7mO3iMx0WVcVEXbMrO62/z2mpn1IjFfbsvMuhz9FCclMYUZE7xnZl0kJpKY4DZmTPa0KlUSE7zHjIk+hZGYL7/Gcl1ppUIrBW+HyE5iAtcOOxSmsFwXEhNsY/hGr5GYyowJ7g+JqSSmkJhCYoLPcn30U5zQZ7mWmMiMCe4jMZXEFIZvsM3M6pUXgRu8bBvDN1sUptJKgY9oG9+P6SSmkJhCYoLPPubopzghG7wdEhO4j9khMYXEJK4dOokJNonJ7GN2uAsvJCb4bPCOfoqTkpjEDV6nMIVPIguJCWzwClebOySmcCQoJCa4u3boJCZZzJhKYgozJrDzLbYxYyqJSVxUde5jCokJfJ11h1WpkJjCjCkkJlks15mLqswhsnCI3CExhcQUEhN449AO+5hCYgozprAqFRJTmDGB16TskJjA6brxNZBOYoK7xHQSUyhM8tRKlcQUElNITCExhcQEzkqFTyJ3SEzirNRJTCIxncQEXvfWOF13ElNITCExhcQUEhM4RO6QmEBidvgaSOJHFp3EJP4tpzN8C4kJ7iMxlcQkLqo6iSkkppCYQmIKiQn8yKLxEW2nlYJNYjqJKSSmkJjCcp14pWT2aySmkphCYgqJKSSmUJjEZ9edxCQS00lM4RAZ+KrZDokJtofEVBJTSEwhMcF97GMqrVRopUJiColJ/JNF4dqhk5hCYRIf0XYSU0hM4FubOxSm0EqBVtrhrJT4nm+nlRKHyMyd7w7DtzB8C62UPLVSpZUKrVRopUIrFVop8Sqmwum600qF03XganOH4Rts3lHVaaVCKxVaqdBKhVZKHAk6rZQ4XWdeW7tDKxVaKXlITGXGFFqp0EqFViq0UqGVEofITisFm99EdgqT+KpZ5o1DO7RSoTCFGVNITGLn22mlxM63U5jEzjfz+v0dVqVCYgozppCYxD6m8IP0TmIKhSkUJnEk6Ox8C61UaKVCYhI730JhOkeCwK9odyhM8rBcR1pph8IUClOYMYkNXqEwnVYK7k+JqRSmUJjCjCkkJrFcF97t0K3zPvoRTuiPVqrc+RZaqdBKySIx2dVyXWml5KmVKq0U+FypsSoVV4mpzJhgcxnemTGFVkpcbRaW6+IiMdljZl1eRz/F+Xz+WVRhvl0UJvtPYSozJrlKTPZHYbJlZp2fo5/ihF4z62LnG2ml5KKVspfEVAqTXG3wMvuYYlGY7EdhKpfhhbeBFApTKEyhMIXCFApTKEyxzszvox/ihP79H4SlLYZTrUzBAAAAAElFTkSuQmCC\"/>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"398.54\" y=\"208.36\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_143\" font-size=\"6.60pt\" font-family=\"Helvetica\">-4000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"398.54\" y=\"187.46\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_144\" font-size=\"6.60pt\" font-family=\"Helvetica\">-2000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"398.54\" y=\"166.56\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_145\" font-size=\"6.60pt\" font-family=\"Helvetica\">0<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\">\n      <text x=\"398.54\" y=\"145.66\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_146\" font-size=\"6.60pt\" font-family=\"Helvetica\">2000<\/text>\n    <\/g>\n    <line x1=\"375.78\" y1=\"205.20\" x2=\"379.24\" y2=\"205.20\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_147\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"375.78\" y1=\"184.30\" x2=\"379.24\" y2=\"184.30\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_148\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"375.78\" y1=\"163.41\" x2=\"379.24\" y2=\"163.41\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_149\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"375.78\" y1=\"142.51\" x2=\"379.24\" y2=\"142.51\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_150\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"389.61\" y1=\"205.20\" x2=\"393.06\" y2=\"205.20\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_151\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"389.61\" y1=\"184.30\" x2=\"393.06\" y2=\"184.30\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_152\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"389.61\" y1=\"163.41\" x2=\"393.06\" y2=\"163.41\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_153\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n    <line x1=\"389.61\" y1=\"142.51\" x2=\"393.06\" y2=\"142.51\" id=\"svg_6d8ff004-2493-49a3-98cd-98437f6477b0_el_154\" clip-path=\"url(#svg_6d8ff004-2493-49a3-98cd-98437f6477b0_cl_4)\" stroke-width=\"0.375\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" fill=\"#FFFFFF\" fill-opacity=\"1\"/>\n  <\/g>\n<\/svg>\n","js":null,"uid":"svg_6d8ff004-2493-49a3-98cd-98437f6477b0","ratio":1.2,"settings":{"tooltip":{"css":" .tooltip_SVGID_ { padding:5px;background:black;color:white;border-radius:2px 2px 2px 2px ; position:absolute;pointer-events:none;z-index:999;}\n","offx":10,"offy":0,"use_cursor_pos":true,"opacity":0.9,"usefill":false,"usestroke":false,"delay":{"over":200,"out":500}},"hover":{"css":" .hover_SVGID_ { fill:orange;stroke:gray; }\n"},"hoverkey":{"css":" .hover_key_SVGID_ { stroke:red; }\n"},"hovertheme":{"css":" .hover_theme_SVGID_ { fill:green; }\n"},"zoom":{"min":1,"max":1},"capture":{"css":" .selected_SVGID_ { fill:red;stroke:gray; }\n","type":"multiple","only_shiny":true,"selected":[]},"capturekey":{"css":" .selected_key_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"capturetheme":{"css":" .selected_theme_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"toolbar":{"position":"topright","saveaspng":true},"sizing":{"rescale":true,"width":1}}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
