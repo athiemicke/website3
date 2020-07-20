@@ -43,7 +43,7 @@ I was fortunate to have the oportunity to learn about data analysis and data sci
 - See the amount of a nutrient per calorie
 
 
-## `r fontawesome::fa("laptop-code", fill = "steelblue")`  [COVID-19](https://athiemicke.com/Project6.html)
+## `r fontawesome::fa("laptop-code", fill = "steelblue")`  [COVID-19](https://athiemicke.com/Project5.html)
 
 - I am using the Google dataset about mobility and correlate it with the total number of death
 for different countries

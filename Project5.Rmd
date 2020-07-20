@@ -9,7 +9,7 @@ Among these are social distancing and lockdowns. Here, I vizualize data provided
 
 
 ```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
-rm(list = ls())
+#rm(list = ls())
 #library(libwgeom)
 #install.packages("googleway")
 library(googleway)
