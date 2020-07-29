@@ -1,0 +1,96 @@
+---
+title: "Gene expression in Hyperomoslarity"
+---
+
+In this project, I vizualize data from [Farabaugh et al. 2020](https://elifesciences.org/articles/52241). 
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+rm(list = ls())
+
+#### Optional workspace setup ####
+dropbox <-  '~/Dropbox (VU Basic Sciences)'
+#dropbox <-  '~/Dropbox'
+setwd(paste(dropbox, '/RNAseq', sep = ''))
+
+#https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138692
+#farabaugh 20202
+#https://elifesciences.org/articles/52241
+
+library(GEOquery)
+library(ggplot2)
+library(ggiraph)
+
+library(dplyr)
+library(magrittr)
+
+
+#pull data
+# GSE_M <- getGEO('GSE138692', GSEMatrix=T)
+# #GSE <- getGEO(' GSE138692', GSEMatrix=F)
+# GSE_Minfo <- GSE_M$GSE138692_series_matrix.txt.gz
+# accessions <- GSE_Minfo$geo_accession 
+# treatments <- GSE_Minfo$title 
+# treatments2 <-GSE_Minfo$`stress:ch1`
+# 
+# getGEO(GEO = 'GSE138692',filename = 'GSE138692_Con_lo500_hi600_MEFs_processed.txt.gz')
+
+setwd(paste(dropbox, '/RNAseq/GSE138692', sep = ''))
+
+#gunzip('GSE138692_Con_lo500_hi600_MEFs_processed.txt.gz')
+GSEdat <- read.delim('GSE138692_Con_lo500_hi600_MEFs_processed.txt')
+
+
+
+# library(RCurl)
+# url_ftp <- "ftp://ftp.ncbi.nlm.nih.gov/GSE138692_Con_lo500_hi600_MEFs_processed.txt.gz"
+# #GSE148729_Calu3_scRNAseq_morethan1000genes_rawcounts_tr.txt.gz
+# userpwd <- "yourUser:yourPass"
+# raw_counts_pull <- getURL(url_ftp, # userpwd = userpwd,
+#                           ftp.use.epsv = FALSE,dirlistonly = TRUE)
+# raw_counts_pull <- download.file(raw_counts_pull,destfile = 'GSE138692_ftp_pull.gz')
+
+
+# #turn microarray data in data frame
+# datExpr <- exprs(GSE_M[[1]])
+# datExprdf <- as.data.frame(datExpr)
+
+#colnames(GSEdat)
+
+
+GSEdat$gene_link <- sprintf("window.open(\"%s%s\")",'https://www.genecards.org/cgi-bin/carddisp.pl?gene=',GSEdat$GeneName)
+
+GSEdat_sig_c_600 <- subset(GSEdat, significant.high600vscontrol.==TRUE)
+#GSEdat_sig_c_5_600 <- subset(GSEdat, significant.low500vshigh600.==TRUE)
+
+gse1 <- ggplot()+
+ # geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
+  #size=control_group_fpkm,
+  # tooltip=GeneName),alpha=0.3)
+  #geom_point_interactive(data=GSEdat, aes(x=log2FoldChange.low500vshigh600. , y=-log10(padj.low500vshigh600.) ,
+# geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.low500vscontrol. , y=-log10(padj.low500vscontrol.) ,
+#                                                                                                size=control_group_fpkm,
+#                                                                                                 tooltip=GeneName) ,alpha=0.5)
+geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
+                                                  size=control_group_fpkm,
+                                                  tooltip=GeneName,
+                                        color=significant.low500vscontrol.
+                                        ,data_id=significant.low500vshigh600.
+                                        ,onclick=gene_link
+                                        ) 
+                                          ,alpha=0.3)+
+   labs(size = "Transcripts (FPKM)", color="Significant change in\n 200 mosmo/l sucrose")+
+  xlab('log2 fold change')+
+  ylab('-log10 adj. p-value')+
+  ggtitle('Gene expression changes in MEFs after 3h\nof exposure to add. 300 mosmol/l sucrose')+
+  ylim(c(-10,320))+
+  theme_classic()
+
+girafe(ggobj = gse1) %>%
+girafe_options(opts_zoom(max = 5),
+               opts_tooltip(use_fill = TRUE))
+```
+
+```{r plotbox, echo=FALSE,warning = FALSE}
+girafe(ggobj = gse1) %>%
+girafe_options(opts_zoom(max = 5),
+               opts_tooltip(use_fill = TRUE))
+```
