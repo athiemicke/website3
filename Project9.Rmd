@@ -1,8 +1,8 @@
 ---
-title: "Gene expression in Hyperomoslarity"
+title: "mendeley library vizualization"
 ---
 
-In this project, I vizualize data from [Farabaugh et al. 2020](https://elifesciences.org/articles/52241). 
+In this project, I vizualize my mendeley library using PCA.
 ```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
 rm(list = ls())
 
@@ -60,7 +60,8 @@ GSEdat$gene_link <- sprintf("window.open(\"%s%s\")",'https://www.genecards.org/c
 
 GSEdat_sig_c_600 <- subset(GSEdat, significant.high600vscontrol.==TRUE)
 #GSEdat_sig_c_5_600 <- subset(GSEdat, significant.low500vshigh600.==TRUE)
-
+#GSEdat$
+#GSEdat_sig_c_600 <- subset(GSEdat, significant.high600vscontrol.==TRUE)
 gse1 <- ggplot()+
  # geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
   #size=control_group_fpkm,
@@ -81,67 +82,16 @@ geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscont
   xlab('log2 fold change')+
   ylab('-log10 adj. p-value')+
   ggtitle('Gene expression changes in MEFs after 3h\nof exposure to add. 300 mosmol/l sucrose')+
- # ylim(c(-10,320))+
+  ylim(c(-10,320))+
   theme_classic()
 
-# girafe(ggobj = gse1) %>%
-# girafe_options(opts_zoom(max = 5),
-#                opts_tooltip(use_fill = TRUE))
-
-
-#proline catabolic process GO:0006562 Aldh4a1, aldehyde dehydrogenase 4 family, member A1
-# Aldh4a1, aldehyde dehydrogenase 4 family, member A1
-# Dao, D-amino acid oxidase
-# Prodh, proline dehydrogenase
-# Prodh2, proline dehydrogenase (oxidase) 2
-#proline biosynthetic process GO:0006561
-# Aldh18a1, aldehyde dehydrogenase 18 family, member A1
-# Noxred1, NADP+ dependent oxidoreductase domain containing 1
-# Pycr1, pyrroline-5-carboxylate reductase 1
-# Pycr2, pyrroline-5-carboxylate reductase family, member 2
-# Pycrl, pyrroline-5-carboxylate reductase-like
-GSE_Pro_Cat <- subset(GSEdat, GeneName=='Aldh4a1' |   GeneName=='Dao' | GeneName=='Prodh' | GeneName=='Prodh2' )
-GSE_Pro_Cat$GO_class <- 'proline catabolic process'
-GSE_Pro_Ana <- subset(GSEdat, GeneName=='Aldh18a1' |   GeneName=='Noxred1' | GeneName=='Pycr1' | GeneName=='Pycr2'| GeneName=='Pycrl' )
-GSE_Pro_Ana$GO_class <- 'proline biosynthetic process'
-GSE_Pro <- rbind.fill(GSE_Pro_Cat,GSE_Pro_Ana)
-
-gse2 <- ggplot()+
- # geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
-  #size=control_group_fpkm,
-  # tooltip=GeneName),alpha=0.3)
-  #geom_point_interactive(data=GSEdat, aes(x=log2FoldChange.low500vshigh600. , y=-log10(padj.low500vshigh600.) ,
-# geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.low500vscontrol. , y=-log10(padj.low500vscontrol.) ,
-#                                                                                                size=control_group_fpkm,
-#                                                                                                 tooltip=GeneName) ,alpha=0.5)
-geom_point_interactive(data=GSE_Pro, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
-                                                  size=control_group_fpkm,
-                                                  tooltip=GeneName,
-                                        color=significant.low500vscontrol.
-                                        ,data_id=significant.low500vshigh600.
-                                        ,onclick=gene_link
-                                        ) 
-                                          ,alpha=0.3)+
-   labs(size = "Transcripts (FPKM)", color="Significant change in\n 200 mosmo/l sucrose")+
-  xlab('log2 fold change')+
-  ylab('-log10 adj. p-value')+
-  
-  ggtitle('Gene expression changes in MEFs after 3h\nof exposure to add. 300 mosmol/l sucrose')+
- # ylim(c(-10,320))+
-  theme_classic()
-
-# girafe(ggobj = gse2) %>%
-# girafe_options(opts_zoom(max = 5),
-#                opts_tooltip(use_fill = TRUE))
-```
-
-```{r plotbox, echo=FALSE,warning = FALSE}
 girafe(ggobj = gse1) %>%
 girafe_options(opts_zoom(max = 5),
                opts_tooltip(use_fill = TRUE))
 ```
+
 ```{r plotbox, echo=FALSE,warning = FALSE}
-girafe(ggobj = gse2) %>%
+girafe(ggobj = gse1) %>%
 girafe_options(opts_zoom(max = 5),
                opts_tooltip(use_fill = TRUE))
 ```
