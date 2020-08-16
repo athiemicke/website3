@@ -245,8 +245,12 @@ for (i in seq_along(fellow2$Fellowship)) {
  
  daaatee <- Sys.Date()
   if(daaatee > as.Date(adjdates$Deadline)){
-    adjdates$Deadline <-  seq.Date(as.Date(adjdates$Deadline), length.out = 2, by = "year")[2]
+    adjdates$Deadline <-  as.character(seq.Date(as.Date(adjdates$Deadline), length.out = 2, by = "year")[2])
+  } else {
+     adjdates$Deadline <-  as.character(adjdates$Deadline)
   }
+ adjdates$Deadline <-  format(as.Date(adjdates$Deadline), format="%Y/%m/%d")
+    
  fellow2_1 <- rbind.fill(fellow2_1, adjdates)
                         #  seq.Date(as.Date(adjdates$Deadline), length.out = 2, by = "year")[2], 
       #  as.Date(adjdates$Deadline))
