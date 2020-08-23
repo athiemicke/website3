@@ -125,6 +125,7 @@ rel_death_mobility <- rbind.fill(Global_Mobility_Report2,covid_cases4)
 
 p15 <- ggplot(rel_death_mobility, aes(x = date, y = value, color=group))+
   geom_line(alpha=0.4) + ylab('relative change') + xlab('')+
+  scale_y_continuous(breaks = seq(0,120,50))+
   ggtitle('Comparing mobility changes in retail and recreation\n to Deaths of people diagnosed with COVID-19')+
   facet_wrap(~country)+
   geom_smooth()+
