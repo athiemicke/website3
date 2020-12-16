@@ -44,15 +44,18 @@ world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 #Irvine 	geo:33.669444,-117.823056
 #Birmingham 		geo:33.653333,-86.808889
 #Kona  	geo:19.65,-155.994167
+#WCM  	geo:40.76455,-73.954147
 
-sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-86.783333,-73.467222,-117.823056,-86.808889,-155.994167
+sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-86.783333,-73.467222,-117.823056,-86.808889,-155.994167,
+                                  -73.954147
+                                
                                    ), latitude = c(50.927222, 59.916667,37.871667,40.439722,36.166667,40.861944,
-                                                                  33.669444,  33.653333,19.65),
+                                                                  33.669444,  33.653333,19.65,40.76455),
                     purpose= c('Education', 'Education', 'Research', 'Research', 'Education', 'Presentation',
-                               'Presentation', 'Presentation', 'Presentation'),
+                               'Presentation', 'Presentation', 'Presentation', 'Research'),
                     Institution=c('Friedrich-Schiller-University Jena','University of Oslo','UC Berkeley',
                                   'University of Pittsburgh', 'Vanderbilt University', 'Cold Spring Harbor',
-                                  'UC Irvine','UA Birmingham','Hawaii'),
+                                  'UC Irvine','UA Birmingham','Hawaii','Weill-Cornell Medicine'),
                     explanation=c('Bachelor of Science 2008-2011\nMaster of Science 2011-2014', 
                                   'Erasmus exchange 2010', 
                                   'Master Thesis student 2013/14',
@@ -61,7 +64,7 @@ sites <- data.frame(longitude = c(11.586111, 10.733333,-122.272778,-79.976389,-8
                                   'CSHL Systems Immunology 2019\nCSHL Cell Death 2019',
                                   'Cell Fate Symposium 2019',
                                   'Southeastern Immunology 2018\nNSF Computational Modeling Workshop 2019',
-                                  'w-qbio 2020'
+                                  'w-qbio 2020', 'Postdoctoral Fellow 2020-present'
                                   )
                    #, onclick=sprintf("window.open(\"%s%s\")",'https://athiemicke.com')
                                   
