@@ -12,7 +12,11 @@ Hello, I am selling my furniture:
 ## Chair: $10
 
 ![](table.jpg) 
-![](tableb.jpg) 
+
+
+
+![](table_b.jpg) 
+
 ## Couch table: $100
 
 ![](desk.jpg) 
