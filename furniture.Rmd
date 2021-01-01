@@ -1,0 +1,44 @@
+---
+title: "Furniture for sale"
+---
+
+
+
+
+Hello, I am selling my furniture:
+
+![](chair.jpg) 
+
+## Chair: $10
+
+![](table.jpg) 
+![](tableb.jpg) 
+## Couch table: $100
+
+![](desk.jpg) 
+
+## Desk: $40
+
+![](schemel.jpg) 
+
+## Desk: $10
+
+![](hammock.jpg) 
+
+## Hammock: $40
+
+![](futton.jpg) 
+
+## Futton: $60
+
+![](table2.jpg) 
+
+## Dining Table: $100
+
+![](chair2.jpg) 
+
+## Dining chair: $40
+
+![](chair3.jpg) 
+
+## Dining Chair: $60

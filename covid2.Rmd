@@ -1,5 +1,8 @@
 ---
 title: "Corona virus"
+output:
+  html_document:
+    df_print: paged
 ---
 
 A coronavirus called COVID-19 has affected this world in 2020. The infection spread globally and was declared a pandemic.
