@@ -63,24 +63,24 @@ Hello, I am selling my furniture:
 
 ![](bed_b.jpg) 
 
-Ikea [Malm Queen bed with storage drawers](https://www.ikea.com/us/en/p/malm-high-bed-frame-2-storage-boxes-white-luroey-s79175978/): $120
+## Ikea [Malm Queen bed with storage drawers](https://www.ikea.com/us/en/p/malm-high-bed-frame-2-storage-boxes-white-luroey-s79175978/): $120
 
 
-[Queen Spring mattress](https://www.amazon.com/gp/product/B00HZNVLTO/): $100
+## [Queen Spring mattress](https://www.amazon.com/gp/product/B00HZNVLTO/): $100
 
 
 
 ![](lamp1.jpg)
 
 
-Lamp: $20
+##bLamp: $20
 
 
 
 ![](lamp4.jpg)
 
 
-## Living room lamp(https://www.amazon.com/gp/product/B01N40KZHW): $80
+## [Living room lamp](https://www.amazon.com/gp/product/B01N40KZHW): $80
 
 
 ![](lamp2.jpg)
@@ -91,4 +91,4 @@ Lamp: $20
 ![](shelf2.jpg)
 
 
-## [Shelf ladder](https://www.amazon.com/gp/product/B0047T6JU0/): $60
+## [ladder shelf](https://www.amazon.com/gp/product/B0047T6JU0/): $60
