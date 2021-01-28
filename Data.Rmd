@@ -1,0 +1,49 @@
+---
+title: "Data"
+---
+
+
+
+```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+
+library(R.matlab)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(reshape)
+library(reshape2)
+library(stringr)
+library(tictoc)
+library(ggiraph)
+geminin4 <- read.csv(file = 'geminin4.csv')
+geminin4$ids <- as.character(geminin4$ids)
+p6 <- ggplot(geminin4)+
+ # geom_point(aes(x=time, y=value, color=ids))+
+  #geom_line(aes(x=time_APCON, y=value, color=ids), size=0.3)+
+  geom_line_interactive(aes(x=time_APCON, y=value
+                            #,tooltip = ids
+                          ,data_id=ids))+
+  #ggtitle('Well C2 - Starvation Medium')+
+  #ggtitle(paste0('Well_',row[i],column[i],'-',unique(newdf2b_mean_all_mean_size$Sample_Name)))+
+  #  geom_ribbon(aes(x=time, y=rel_value,ymax=rel_value+sd, ymin=rel_value-sd, fill=feature),color=NA,alpha=0.3)+
+  #facet_wrap(~Sample_Name,scales = 'free')+
+  geom_vline(xintercept = 0, color='red',linetype='dashed')+
+  ylab('fluorescence [a.u.]')+
+  xlab('time since mitosis [h]')+
+  theme_classic()+
+  theme(
+    legend.position="none"
+  )
+
+
+
+```
+
+
+```{r plotbox, echo=FALSE,warning = FALSE,comment=F,message=F}
+girafe(ggobj = p6) %>%
+girafe_options( opts_hover_inv(css = "opacity:0.1;"),
+                opts_hover(css = "stroke-width:2;"
+  #,opts_hover(css = "color:red;")
+))
+```
