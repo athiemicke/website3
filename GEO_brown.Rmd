@@ -14,19 +14,11 @@ library(ggrepel)
 library(ggiraph)
 library(tidyr)
 library(plyr)
-#ENSG00000134057 <-  read.table(file = 'ENSG00000134057.tsv', sep = '\t', header = TRUE)
-#tissue_category_rna_adipose <-  read.table(file = 'tissue_category_rna_adipose.tsv', sep = '\t', header = TRUE)
 
-#GSE129687_brown_wild_v_mut.deseq <- gunzip("GSE129687_brown_wild_v_mut.deseq.csv.gz")
 GSE129687_brown_wild_v_mut.deseq <- readLines("GSE129687_brown_wild_v_mut.deseq.csv.gz")
 GSE129687_brown_wild_v_mut.deseq <- as.data.frame(GSE129687_brown_wild_v_mut.deseq)
 
-# GSE129687_brown_wild_v_mut.deseq <- read.csv(untar('GSE129687_brown_wild_v_mut.deseq.csv.gz'))
-# GSE129687_brown_wild_v_mut.deseq2 <- as.data.frame(GSE129687_brown_wild_v_mut.deseq)
-# GSE129687_brown_wild_v_mut.deseq3 <- str_split(string = GSE129687_brown_wild_v_mut.deseq2$GSE129687_brown_wild_v_mut.deseq,pattern = ',')
-# 
-# GSE129687_brown_wild_v_mut.deseq3 <- GSE129687_brown_wild_v_mut.deseq2 %>% 
-#   separate(file_name = GSE129687_brown_wild_v_mut.deseq2$GSE129687_brown_wild_v_mut.deseq,pattern = ',')
+
 
 GSE129687_brown_wild_v_mut.deseq3 <-separate(data = GSE129687_brown_wild_v_mut.deseq,sep = ',',col = 'GSE129687_brown_wild_v_mut.deseq',
                                              into = c('id','baseMean','log2FoldChange','lfcSE','stat','pvalue','padj'))
@@ -34,38 +26,23 @@ GSE129687_brown_wild_v_mut.deseq3 <- GSE129687_brown_wild_v_mut.deseq3[-1,]
 GSE129687_brown_wild_v_mut.deseq3$log2FoldChange <- as.numeric(GSE129687_brown_wild_v_mut.deseq3$log2FoldChange)
 GSE129687_brown_wild_v_mut.deseq3$padj <- as.numeric(GSE129687_brown_wild_v_mut.deseq3$padj)
 GSE129687_brown_wild_v_mut.deseq3$pvalue <- as.numeric(GSE129687_brown_wild_v_mut.deseq3$pvalue)
+GSE129687_brown_wild_v_mut.deseq3$baseMean <- as.numeric(GSE129687_brown_wild_v_mut.deseq3$baseMean)
 
 
-# library(GEOquery)
-# #pull data
-# GSE_M <- getGEO('GSE129687', GSEMatrix=T)
-# #GSE <- getGEO('GSE129687', GSEMatrix=F)
-# GSE_Minfo <- GSE_M$GSE129687_series_matrix.txt.gz
-# accessions <- GSE_Minfo$geo_accession 
-# treatments <- GSE_Minfo$title 
-# supp <-GSE_Minfo$
-# 
-#   GSE129687_brown_wild_v_mut <- getGEO(GEO = 'GSE129687',filename = 'GSE129687_brown_wild_v_mut.deseq.csv.gz')
-# 
-# 
-# 
-# gunzip('GSE138692_Con_lo500_hi600_MEFs_processed.txt.gz')
-# GSEdat <- read.delim('GSE138692_Con_lo500_hi600_MEFs_processed.txt')
+POIs <- c('Gck','Actn1','Gapdh','Pparg')
 
 
-GSE129687_brown_wild_v_mut.deseq3$POI <- NA
-GSE129687_brown_wild_v_mut.deseq3$POI <-  ifelse(
-  test = 
-    #grepl(x = GSE129687_brown_wild_v_mut.deseq3$id, pattern = 'Gck'), 
-    (GSE129687_brown_wild_v_mut.deseq3$id== 'Gck'),
-                                     yes= 'Gck',
-                                     no= GSE129687_brown_wild_v_mut.deseq3$POI
-)
 GSE129687_brown_wild_v_mut.deseq3$POI2 <- F
 GSE129687_brown_wild_v_mut.deseq3$POI2 <-  ifelse(
-  test = (GSE129687_brown_wild_v_mut.deseq3$id== 'Gck'), 
+  test =  grepl( paste(x=POIs,collapse="|"), x= GSE129687_brown_wild_v_mut.deseq3$id), 
   yes= T,
   no= GSE129687_brown_wild_v_mut.deseq3$POI2
+)
+GSE129687_brown_wild_v_mut.deseq3$POI <- NA
+GSE129687_brown_wild_v_mut.deseq3$POI <-  ifelse(
+  test =  GSE129687_brown_wild_v_mut.deseq3$POI2, 
+  yes= GSE129687_brown_wild_v_mut.deseq3$id,
+  no= GSE129687_brown_wild_v_mut.deseq3$POI
 )
 
 GSE129687_brown_wild_v_mut.deseq4 <- subset(GSE129687_brown_wild_v_mut.deseq3, POI2==F)
@@ -76,14 +53,17 @@ GSE129687_brown_wild_v_mut.deseq6$gene_link <- sprintf("window.open(\"%s%s\")",'
                                                        GSE129687_brown_wild_v_mut.deseq6$id)
 
 
+
+GSE129687_brown_wild_v_mut.deseq4 <- subset(GSE129687_brown_wild_v_mut.deseq3, POI2==F)
+GSE129687_brown_wild_v_mut.deseq5 <- subset(GSE129687_brown_wild_v_mut.deseq3, POI2==T)
+GSE129687_brown_wild_v_mut.deseq6 <- rbind.fill(GSE129687_brown_wild_v_mut.deseq4,GSE129687_brown_wild_v_mut.deseq5)
+
+GSE129687_brown_wild_v_mut.deseq6$gene_link <- sprintf("window.open(\"%s%s\")",'https://www.genecards.org/cgi-bin/carddisp.pl?gene=',
+                                                       GSE129687_brown_wild_v_mut.deseq6$id)
+
+
 gse2 <- ggplot()+
-  # geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.high600vscontrol. , y=-log10(padj.high600vscontrol.) ,
-  #size=control_group_fpkm,
-  # tooltip=GeneName),alpha=0.3)
-  #geom_point_interactive(data=GSEdat, aes(x=log2FoldChange.low500vshigh600. , y=-log10(padj.low500vshigh600.) ,
-  # geom_point_interactive(data=GSEdat_sig_c_600, aes(x=log2FoldChange.low500vscontrol. , y=-log10(padj.low500vscontrol.) ,
-  #                                                                                                size=control_group_fpkm,
-  #                                                                                                 tooltip=GeneName) ,alpha=0.5)
+
   geom_point_interactive(data=GSE129687_brown_wild_v_mut.deseq6, aes(x=log2FoldChange , y=-log10(pvalue) ,
                                           # size=control_group_fpkm,
                                            tooltip=id
@@ -105,6 +85,38 @@ gse2 <- ggplot()+
   theme_classic()
 
 
+gse3 <- ggplot()+
+
+  geom_point_interactive(data=GSE129687_brown_wild_v_mut.deseq6, aes(x=log(baseMean) , y=log2FoldChange ,                                                                  
+                                           size=-log10(pvalue),
+                                           tooltip=id
+                                          , color=POI2
+                                          
+                                          # ,data_id=significant.low500vshigh600.
+                                           ,onclick=gene_link
+  ) 
+  ,alpha=0.3,show.legend=F)+
+ # labs(size = "Transcripts (FPKM)", color="Significant change in\n 200 mosmo/l sucrose")+
+ # xlab('log2 fold change')+
+ # ylab('-log10 adj. p-value')+
+  scale_color_manual(values=c('grey80','red'))+
+  ggrepel::geom_label_repel(data=GSE129687_brown_wild_v_mut.deseq6, aes(x=log(baseMean) , y=log2FoldChange ,label=POI))+
+   ylim(c(-1,1))+
+  # ylim(c(-8,8))+
+  ggtitle('Gene expression changes in brown fat vs. mutant')+
+  # ylim(c(-10,320))+
+  theme_classic()
+
+
+
+gluco <- as.numeric(GSE129687_brown_wild_v_mut.deseq5$baseMean)
+
+gse4 <-ggplot()+
+ # geom_density(data = GSE129687_brown_wild_v_mut.deseq6,mapping = aes(x = log(baseMean)))+
+geom_histogram(data = GSE129687_brown_wild_v_mut.deseq6,mapping = aes(x = log(baseMean)))+
+  geom_vline_interactive(xintercept = log(gluco),tooltip=unique(GSE129687_brown_wild_v_mut.deseq6$POI)[-1],color='red')+
+  theme_classic()
+
 
 
 
@@ -116,5 +128,19 @@ gse2 <- ggplot()+
 girafe(ggobj = gse2) %>%
 girafe_options(opts_zoom(max = 5),
                opts_tooltip(use_fill = TRUE))
+
+```
+
+```{r plotbox2, echo=FALSE,warning = FALSE,comment=F,message=F}
+girafe(ggobj = gse3) %>%
+girafe_options(opts_zoom(max = 5),
+               opts_tooltip(use_fill = TRUE))
+
+```
+
+```{r plotbox3, echo=FALSE,warning = FALSE,comment=F,message=F}
+girafe(ggobj = gse4) %>%
+  girafe_options(opts_zoom(max = 5),
+                 opts_tooltip(use_fill = TRUE))
 
 ```
