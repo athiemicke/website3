@@ -1,8 +1,8 @@
 ---
-title: "Corona virus"
+title: "Coronavirus"
 ---
 
-A coronavirus causing a disease called COVID-19 has affected this world in 2020. The infection spread globally and was declared a pandemic.
+A coronavirus causing a disease called COVID-19 has affects the world since 2020. The infection spread globally and was declared a pandemic.
 Several countries have decided to take unprecedented and severe precautions to prevent the spread of this virus.
 Among these are social distancing and lockdowns. Here, I vizualize data provided by [Google](https://www.google.com/covid19/mobility/) on the mobility changes in various countries and [data](https://github.com/owid/covid-19-data) on the number of deaths of people infected with the novel coronavirus.
 

@@ -4,7 +4,7 @@ title: "Brown Fat gene expression Data"
 
 I used the processed gene expression data from this [GEO](https://www.ncbi.nlm.nih.gov//geo/query/acc.cgi?acc=GSE129687) dataset published in this [paper](https://www.cell.com/cell-metabolism/fulltext/S1550-4131(19)30197-4?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS1550413119301974%3Fshowall%3Dtrue) to make a volcano plot of showing the gene expression changes between WT brown fat and the mutant used in the paper.
 
-```{r setup, echo=FALSE,include=FALSE,warning = FALSE}
+```{r setup, echo=T,include=F,warning = FALSE}
 setwd('~/Google Drive/GeneExpressionDatasets')
 
 
