@@ -41,13 +41,14 @@ library(rvest)
 
 ```
 
-I selected 6 countries as examples for different areas of the world and different economic capabilities.
-The data shows for the selected countries a drop in mobility to between 40-60% of normal mobility to public places such as parks and retail.
-This data also shows that economically weaker countries (South Africa, Philippines, Brazil, India) are affected much more by the coronavirus. The lockdown was overall more severe, and the total number of deaths is still increasing.
-Further, it is interesting to note that the trend to return to normal mobility appears to be slowing down (except for Germany). In the USA, the mobility even appears to decrease againg, likely caused by new lockdowns in various counties across the country.
+
 
 ```{r box1, echo=FALSE,warning = FALSE,include=FALSE}
 
+# I selected 6 countries as examples for different areas of the world and different economic capabilities.
+# The data shows for the selected countries a drop in mobility to between 40-60% of normal mobility to public places such as parks and retail.
+# This data also shows that economically weaker countries (South Africa, Philippines, Brazil, India) are affected much more by the coronavirus. The lockdown was overall more severe, and the total number of deaths is still increasing.
+# Further, it is interesting to note that the trend to return to normal mobility appears to be slowing down (except for Germany). In the USA, the mobility even appears to decrease againg, likely caused by new lockdowns in various counties across the country.
 library(rvest)
 library(httr)
 library(XML)
